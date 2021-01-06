@@ -1,0 +1,43 @@
+{
+  "name": "root",
+  "tabBar": {
+    "frames": [
+      {
+        "title": "柚子英语教育",
+        "name": "home",
+        "url": "./pages/tab-home/tab-home"
+      },
+      {
+        "title": "柚子英语教育",
+        "name": "course",
+        "url": "./pages/tab-course/tab-course"
+      },
+      {
+        "title": "柚子英语教育",
+        "name": "user",
+        "url": "./pages/tab-user/tab-user"
+      }
+    ],
+    "list": [
+      {
+        "text": "首页",
+        "iconPath": "./images/icon__tab--home-0.png",
+        "selectedIconPath": "./images/icon__tab--home-1.png"
+      },
+      {
+        "text": "预约课程",
+        "iconPath": "./images/icon__tab--course-0.png",
+        "selectedIconPath": "./images/icon__tab--course-1.png"
+      },
+      {
+        "text": "我的",
+        "iconPath": "./images/icon__tab--user-0.png",
+        "selectedIconPath": "./images/icon__tab--user-1.png"
+      }
+    ],
+    "textOffset": 6,
+    "color": "#999999",
+    "selectedColor": "#333333",
+    "scrollEnabled": false
+  }
+}

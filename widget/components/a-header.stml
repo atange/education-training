@@ -1,0 +1,33 @@
+<template>
+  (isApp() &&
+  <safe-area class="a-header">
+    <text class="a-header--text">{this.props.title || this.props.children}</text>
+  </safe-area>
+  )
+</template>
+
+<script>
+import {isApp} from "./utils";
+
+export default {
+  name: "a-header"
+}
+</script>
+
+<style scoped>
+.a-header {
+  background: #FFF;
+  flex-flow: row nowrap;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.a-header--text {
+  font-size: 18px;
+  font-weight: bold;
+  color: #000;
+  height: 26px;
+  margin: 9px 0;
+  text-align: center;
+  flex: 1;
+}
+</style>

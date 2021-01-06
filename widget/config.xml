@@ -1,6 +1,6 @@
  <widget id="A6154208583758"  version="0.0.1">
 
-    <name>教育培训</name>
+    <name>柚子英语教育</name>
 
     <description>
 
@@ -16,7 +16,7 @@
 
 	<preference name="avm" value="true"/>
 
-    <content src="pages/main/main" />
+    <content src="app.json" />
 
     <access origin="*" />
 

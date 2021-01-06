@@ -1,0 +1,116 @@
+<template name='tpl'>
+  <view class="page">
+    <a-header>柚子英语教育</a-header>
+    <!--    <a-header title="柚子英语教育"/>-->
+    <scroll-view class="main" scroll-y>
+      <swiper autoplay circular class="main__swiper" style="margin: 10px 0;"
+              v-if="homeData.banners">
+        <swiper-item v-for="(item,index) in homeData.banners" class="main__swiper--item">
+          <img :src="item.cover" class="main__swiper--img"/>
+        </swiper-item>
+      </swiper>
+
+
+      <scroll-view class="main__menu" scroll-x v-if="homeData.course_category">
+        <view class="main__menu--item" v-for="item in homeData.course_category"
+              :style="'width:'+api.winWidth/4+'px;'">
+          <img :src="item.image" class="main__menu--item-img"/>
+          <text class="main__menu--item-text">{{ item.name }}</text>
+        </view>
+      </scroll-view>
+
+
+      <text v-if="homeData.aboutus">{{ homeData.aboutus[0].value }}</text>
+
+    </scroll-view>
+
+  </view>
+</template>
+<script>
+import AHeader from "../../components/a-header.stml";
+import {GET} from "../../script/req";
+
+export default {
+  name: "tpl",
+  components: {AHeader},
+  installed() {
+    // 显式声明状态栏样式 解决部分安卓机型自动生成的灰色半透明背景
+    api.setStatusBarStyle && api.setStatusBarStyle({
+      style: 'dark',//字体样式
+      color: '-'//背景色
+    });
+
+    this.getHomeData();
+  },
+  data() {
+    return {
+      homeData: {}
+    };
+  },
+  computed: {},
+  methods: {
+    getHomeData() {
+      console.log('getHomeData')
+      GET('i_alls/home').then(data => {
+        this.data.homeData = data;
+      })
+    },
+    swiperChange(e) {
+      console.log(JSON.stringify(e))
+    }
+  }
+};
+</script>
+<style>
+.page {
+  height: 100%;
+  background-color: white;
+}
+
+
+.main {
+  flex: 1;
+}
+
+.main__swiper {
+  height: 200px;
+}
+
+.main__swiper--item {
+  height: 100%;
+}
+
+.main__swiper--img {
+  height: 100%;
+  width: 100%;
+}
+
+.main__menu {
+  flex-flow: row nowrap;
+  overflow-x: scroll;
+  white-space: nowrap;
+  flex-shrink: 0;
+  overflow-scrolling: touch;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  padding-bottom: 20px;
+  margin-bottom: 5px;
+}
+
+.main__menu--item {
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+  display: inline-flex;
+}
+
+.main__menu--item-img {
+  width: 60px;
+  height: 60px;
+}
+
+.main__menu--item-text {
+  color: #333;
+  font-size: 12px;
+}
+</style>
