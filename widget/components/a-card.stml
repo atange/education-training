@@ -1,0 +1,56 @@
+<template>
+  extendsClassStyleEvents.call(this,
+  <view class="a-card">
+    {this.props.title &&
+    <view class="a-card__header">
+      <view class="a-card__header--solid"></view>
+      <text class="a-card__header--text">{this.props.title}</text>
+    </view>
+    }
+    <view class="a-card__content">
+      {this.props.children}
+    </view>
+  </view>
+  )
+</template>
+
+<script>
+import {extendsClassStyleEvents} from "./utils";
+
+export default {
+  name: "a-card"
+}
+</script>
+
+<style scoped>
+.a-card {
+  background: #fff;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  padding: 15px;
+}
+
+.a-card__header {
+  flex-direction: row;
+}
+
+.a-card__header--solid {
+  width: 3px;
+  height: 18px;
+  background: #F1C694;
+  margin: 5px 0;
+}
+
+.a-card__header--text {
+  padding: 5px 0 15px 6px;
+  line-height: 1;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+.a-card__content {
+}
+
+
+</style>
