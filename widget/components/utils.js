@@ -61,7 +61,19 @@ const ref = (value) => {
 };
 const toRef = (obj) => obj.value;
 
+/**
+ * 继承父组件的 class 、style 和 on事件
+ * @param VNode
+ * @returns {*}
+ */
+function extendsClassStyleEvents(VNode) {
+    this.props.class && (VNode.attributes.class += ' ' + this.props.class);
+    this.props.style && (VNode.attributes.style = this.props.style);
+    Object.values(this.props).filter(item => typeof item === 'function' && item.name.startsWith('on')).forEach(ev => VNode.attributes[ev.name] = ev);
+    return VNode;
+}
+
 
 export {
-    ref, toRef, slotHook, isMP, isApp
+    ref, toRef, slotHook, isMP, isApp, extendsClassStyleEvents
 }
