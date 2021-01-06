@@ -11,7 +11,8 @@
       </swiper>
 
 
-      <scroll-view class="main__menu" scroll-x v-if="homeData.course_category">
+      <scroll-view class="main__menu" scroll-x v-if="homeData.course_category"
+                   :style="'height:'+(api.winWidth/4+20)+'px;'">
         <view class="main__menu--item" v-for="item in homeData.course_category"
               :style="'width:'+api.winWidth/4+'px;'">
           <img :src="item.image" class="main__menu--item-img"/>
@@ -20,7 +21,10 @@
       </scroll-view>
 
 
-      <text v-if="homeData.aboutus">{{ homeData.aboutus[0].value }}</text>
+      <a-card title="关于我们" v-if="homeData.aboutus" class="main__about">
+        <text class="main__about--text">{{ homeData.aboutus[0].value }}</text>
+      </a-card>
+
 
     </scroll-view>
 
@@ -29,10 +33,11 @@
 <script>
 import AHeader from "../../components/a-header.stml";
 import {GET} from "../../script/req";
+import ACard from "../../components/a-card.stml";
 
 export default {
   name: "tpl",
-  components: {AHeader},
+  components: {ACard, AHeader},
   installed() {
     // 显式声明状态栏样式 解决部分安卓机型自动生成的灰色半透明背景
     api.setStatusBarStyle && api.setStatusBarStyle({
@@ -57,6 +62,10 @@ export default {
     },
     swiperChange(e) {
       console.log(JSON.stringify(e))
+    },
+    test() {
+      console.log(this.data.homeData)
+
     }
   }
 };
@@ -93,7 +102,6 @@ export default {
   overflow-scrolling: touch;
   border-bottom: 1px solid rgba(0, 0, 0, 0.04);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  padding-bottom: 20px;
   margin-bottom: 5px;
 }
 
@@ -102,6 +110,7 @@ export default {
   justify-content: center;
   align-items: center;
   display: inline-flex;
+  margin: 10px 0;
 }
 
 .main__menu--item-img {
@@ -112,5 +121,11 @@ export default {
 .main__menu--item-text {
   color: #333;
   font-size: 12px;
+}
+
+.main__about--text {
+  color: #666;
+  font-size: 14px;
+  line-height: 24px;
 }
 </style>
