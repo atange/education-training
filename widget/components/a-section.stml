@@ -1,13 +1,13 @@
 <template>
   extendsClassStyleEvents.call(this,
-  <view class="a-card">
+  <view class="a-section">
     {this.props.title &&
-    <view class="a-card__header">
-      <view class="a-card__header--solid"></view>
-      <text class="a-card__header--text">{this.props.title}</text>
+    <view class="a-section__header">
+      <view class="a-section__header--solid"></view>
+      <text class="a-section__header--text">{this.props.title}</text>
     </view>
     }
-    <view class="a-card__content">
+    <view class="a-section__content">
       {this.props.children}
     </view>
   </view>
@@ -18,30 +18,30 @@
 import {extendsClassStyleEvents} from "./utils";
 
 export default {
-  name: "a-card"
+  name: "a-section"
 }
 </script>
 
 <style scoped>
-.a-card {
+.a-section {
   background: #fff;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
   border-radius: 5px;
   padding: 15px;
 }
 
-.a-card__header {
+.a-section__header {
   flex-direction: row;
 }
 
-.a-card__header--solid {
+.a-section__header--solid {
   width: 3px;
   height: 18px;
   background: #F1C694;
   margin: 5px 0;
 }
 
-.a-card__header--text {
+.a-section__header--text {
   padding: 5px 0 15px 6px;
   line-height: 1;
   font-size: 18px;
@@ -49,7 +49,7 @@ export default {
   color: #333;
 }
 
-.a-card__content {
+.a-section__content {
 }
 
 

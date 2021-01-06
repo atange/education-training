@@ -21,9 +21,9 @@
       </scroll-view>
 
 
-      <a-card title="关于我们" v-if="homeData.aboutus" class="main__about">
+      <a-section title="关于我们" v-if="homeData.aboutus" class="main__about">
         <text class="main__about--text">{{ homeData.aboutus[0].value }}</text>
-      </a-card>
+      </a-section>
 
 
     </scroll-view>
@@ -33,11 +33,11 @@
 <script>
 import AHeader from "../../components/a-header.stml";
 import {GET} from "../../script/req";
-import ACard from "../../components/a-card.stml";
+import ASection from "../../components/a-section.stml";
 
 export default {
   name: "tpl",
-  components: {ACard, AHeader},
+  components: {ASection, AHeader},
   installed() {
     // 显式声明状态栏样式 解决部分安卓机型自动生成的灰色半透明背景
     api.setStatusBarStyle && api.setStatusBarStyle({
