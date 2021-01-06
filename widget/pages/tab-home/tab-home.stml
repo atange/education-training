@@ -20,6 +20,15 @@
         </view>
       </scroll-view>
 
+      <a-section title="名师团队" v-if="homeData.teacher_teams" class="main__teachers">
+        <scroll-view class="main__teacher" scroll-x>
+          <view class="main__teacher--item" v-for="item in homeData.teacher_teams">
+            <img :src="item.thumb" class="main__teacher--item-img"/>
+            <text class="main__teacher--item-name">{{ item.name }}</text>
+            <text class="main__teacher--item-introduction">{{ item.introduction }}</text>
+          </view>
+        </scroll-view>
+      </a-section>
 
       <a-section title="关于我们" v-if="homeData.aboutus" class="main__about">
         <text class="main__about--text">{{ homeData.aboutus[0].value }}</text>
@@ -94,15 +103,23 @@ export default {
   width: 100%;
 }
 
-.main__menu {
+.main__menu, .main__teacher {
   flex-flow: row nowrap;
   overflow-x: scroll;
   white-space: nowrap;
   flex-shrink: 0;
   overflow-scrolling: touch;
+  margin-bottom: 5px;
+}
+
+.main__menu {
   border-bottom: 1px solid rgba(0, 0, 0, 0.04);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  margin-bottom: 5px;
+}
+
+.main__teacher {
+  padding: 5px;
+  height: 154px;
 }
 
 .main__menu--item {
@@ -127,5 +144,42 @@ export default {
   color: #666;
   font-size: 14px;
   line-height: 24px;
+}
+
+.main__teacher--item {
+  width: 120px;
+  height: 140px;
+  background: #FFFFFF;
+  border: 1px solid #f0f0f0;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+  margin: 0 5px;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  display: inline-flex;
+}
+
+.main__teacher--item-img {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+}
+
+.main__teacher--item-name {
+  color: #333;
+  font-size: 14px;
+  margin: 12px 0;
+  font-weight: bold;
+}
+
+.main__teacher--item-introduction {
+  color: #999;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  text-align: center;
+  width: 110px;
+  white-space: nowrap;
 }
 </style>
