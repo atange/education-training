@@ -1,0 +1,85 @@
+<template>
+  extendsClassStyleEvents.call(this,
+  <view class="a-tabs">
+    <view class="a-tabs__nav">
+      {this.props.children.map((item,index)=>
+      <view class="a-tabs__nav--item" onclick={()=>this.props.param.current=index}>
+        <text
+            :class="'a-tabs__nav--item-text'+(index===this.props.param.current?' a-tabs__nav--item-text---active':'')">
+          {item.attributes.title}
+        </text>
+      </view>
+      )}
+      <view class="a-tabs__nav--line" style={this.lineStyle}></view>
+    </view>
+    <swiper autoplay={false} circular={false} :current={this.props.param.current}
+            onchange={({detail})=>this.props.param.current=detail.current}
+      class="a-tabs__content"
+      >
+      <swiper-item v-for="tab in this.props.children">
+        <scroll-view scroll-y="true" class="a-tabs__content--scroll-view">
+          {tab}
+        </scroll-view>
+      </swiper-item>
+    </swiper>
+  </view>
+  )
+</template>
+
+<script>
+
+import {extendsClassStyleEvents} from "./utils";
+
+export default {
+  name: "a-tabs",
+  computed: {
+    lineStyle() {
+      return {background: 'red'};
+    },
+    swiperHeight() {
+    }
+  }
+}
+
+
+</script>
+
+<style scoped>
+.a-tabs {
+  flex: 1;
+}
+
+.a-tabs__nav {
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  height: 44px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.a-tabs__content {
+  flex: 1;
+}
+
+.a-tabs__content--scroll-view {
+  flex: 1;
+}
+
+.a-tabs__nav--item {
+  flex: 1 0 auto;
+  padding: 0 12px;
+  justify-content: center;
+  align-items: center;
+}
+
+.a-tabs__nav--item-text {
+  color: #666;
+  font-size: 14px;
+  font-weight: normal;
+}
+
+.a-tabs__nav--item-text---active {
+  color: #666;
+  font-weight: bold;
+}
+</style>

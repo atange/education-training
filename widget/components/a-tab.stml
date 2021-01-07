@@ -1,0 +1,16 @@
+<template>
+  <view class="a-tab">
+    {this.props.children}
+  </view>
+</template>
+
+<script>
+
+export default {
+  name: "a-tab"
+}
+</script>
+
+<style scoped>
+
+</style>
