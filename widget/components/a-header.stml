@@ -19,6 +19,7 @@ export default {
   background: #FFF;
   flex-flow: row nowrap;
   border-bottom: 1px solid #f0f0f0;
+  flex-shrink: 0;
 }
 
 .a-header--text {
