@@ -1,4 +1,4 @@
-<template name='tpl'>
+<template name='tab-home'>
   <view class="page">
     <a-header>柚子英语教育</a-header>
     <!--    <a-header title="柚子英语教育"/>-->
@@ -67,6 +67,9 @@ export default {
       console.log('getHomeData')
       GET('i_alls/home').then(data => {
         this.data.homeData = data;
+        api.setPrefs({
+          key: 'course_category', value: data.course_category
+        });
       })
     },
     swiperChange(e) {

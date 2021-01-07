@@ -1,118 +1,67 @@
-<template name='tpl'>
-    <view class="page">
-        <safe-area class="header">
-            <text class="header__title">APICloud</text>
-        </safe-area>
-        <scroll-view class="main">
+<template name='tab-course'>
+  <view class="page">
+    <a-header>柚子英语教育</a-header>
 
-            <text class="h1">{{text}}</text>
-            <view class="item" v-for="[key,value,name] in list">
-                <text class="item__text">{{name}}: {{value}}</text>
-            </view>
+    <a-tabs class="course-tabs" :param="tabsParam">
+      <a-tab title="标签1">
+        <a-section title="test">
+          <view>
+            <text>内容1</text>
+          </view>
+        </a-section>
+      </a-tab>
+      <a-tab title="标签2">
+        <text>内容2</text>
+      </a-tab>
+      <a-tab title="标签3">
+        <text>内容3</text>
+      </a-tab>
+    </a-tabs>
 
-        </scroll-view>
-
-
-
-    </view>
+  </view>
 </template>
 <script>
-export default {
-    name: "tpl",
-    apiready() {
-        //like created
-    },
-    data() {
-        return {
-            text: "Hello APP!"
-        };
-    },
-    computed: {
-        list() {
-            const apiNames = {
-                version: "引擎版本",
-                systemType: "系统类型",
-                systemVersion: "系统版本",
-                deviceId: "设备标识",
-                deviceModel: "设备型号",
-                deviceName: "设备名称",
-                operator: "运营商名称",
-                connectionType: "网络状态",
-                winName: "窗口名字",
-                winWidth: "窗口宽度",
-                winHeight: "窗口高度",
-                appId: "应用ID",
-                appName: "应用名称",
-                appVersion: "应用版本"
-            };
+import AHeader from "../../components/a-header.stml";
+import ATab from "../../components/a-tab.stml";
+import ATabs from "../../components/a-tabs.stml";
+import ASection from "../../components/a-section.stml";
+import {GET} from "../../script/req";
 
-            return Object.entries(api)
-                .filter(([key]) => apiNames[key])
-                .map(item => {
-                    return [...item, apiNames[item[0]]];
-                });
-        }
-    },
-    methods: {
-        btnAction(e) {
-            api.alert({
-                msg: e.currentTarget.dataset.info
-            });
-        }
+export default {
+  name: "tpl",
+  components: {ASection, AHeader, ATabs, ATab},
+  apiready() {
+    let course_category = api.getPrefs({
+      sync: true,
+      key: 'course_category'
+    });
+    this.data.course_category = course_category ? JSON.parse(course_category) : [];
+    this.getCourseData();
+  },
+  data() {
+    return {
+      tabsParam: {
+        current: 0,
+        type: 'line',
+        color: 'red'
+      },
+      course_category: []
+    };
+  },
+  methods: {
+    getCourseData() {
+      let id = this.data.course_category[this.data.tabsParam.current].id;
+      GET('i_alls/getCoursesList?categoryId=' + id).then(data => {
+        console.log(JSON.stringify(data))
+      })
     }
+  }
 };
 </script>
 <style>
 .page {
-    height: 100%;
-    background-color: white;
-}
-.header {
-    background: #81a9c3;
-    justify-content: center;
-    align-items: center;
-}
-.header__title {
-    color: #fff;
-    font-size: 18px;
-    font-weight: bold;
-    height: 50px;
-    line-height: 50px;
+  height: 100%;
+  background-color: white;
 }
 
-.main {
-    flex: 1;
-    padding: 15px;
-}
-
-.h1 {
-    font-size: 24px;
-}
-
-.item {
-    flex-direction: row;
-    padding: 10px 0;
-}
-.item__text {
-    color: #333;
-    white-space: nowrap;
-}
-
-.item__value {
-    margin-left: 5px;
-}
-
-.footer {
-    background: #81a9c3;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-}
-
-.footer__text {
-    color: #fff;
-    font-size: 14px;
-    height: 30px;
-    line-height: 30px;
-}
 </style>
