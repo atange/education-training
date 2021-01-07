@@ -18,6 +18,7 @@ function isApp() {
 
 /**
  * 让模板支持 slot
+ * 2021-1-7 19:50:28 修正传入节点为 $slot 避免和小程序的模板冲突
  * @param VNode
  * @returns {*}
  */
@@ -29,10 +30,10 @@ function slotHook(VNode) {
             if (VNode.nodeName === 'slot') { // 如果是组件中的挖空,记录下该空槽的位置
                 slots[VNode.attributes.name] = {i, p, attr: VNode.attributes};
                 p[i] = false;//当前节点标记为不渲染
-            } else if (VNode.nodeName === 'input') { //不太清楚为何 input 后的元素被识别成了 input的子代元素
+            } else if (VNode.nodeName === 'input') { //不太清楚为何 input 后的元素被识别成了 input 的子代元素
                 VNode.children = []; // 手动清除 input 下的子元素
-            } else if (VNode.attributes && VNode.attributes.slot) {//如果从模板传来的带slot属性的节点 尝试寻找有无该slot取值的空槽
-                const _slot = slots[VNode.attributes.slot];
+            } else if (VNode.attributes && VNode.attributes.$slot) {//如果从模板传来的带 $slot 属性的节点 尝试寻找有无该 $slot 取值的空槽
+                const _slot = slots[VNode.attributes.$slot];
                 if (_slot) {//找到空槽位置
                     const {i: _i, p: _p, attr} = _slot;
                     VNode.attributes = attr;
@@ -46,7 +47,9 @@ function slotHook(VNode) {
     }
 
     slotFilter(VNode);
-    slots = null;// 清空插槽容器 释放内存
+    slots = {};// 清空插槽容器 释放内存
+    console.log(VNode)
+
     return VNode;
 }
 
