@@ -1,0 +1,27 @@
+<template>
+  extendsClassStyleEvents.call(this, slotHook(
+  <view class="a-card">
+    <view class="a-card__header">
+      <slot name="header"/>
+    </view>
+    <view class="a-card__content">
+      {this.props.children}
+    </view>
+    <view class="a-card__footer">
+      <slot name="footer"/>
+    </view>
+  </view>
+  ))
+</template>
+
+<script>
+import {extendsClassStyleEvents, slotHook} from "./utils";
+
+export default {
+  name: "a-card"
+}
+</script>
+
+<style scoped>
+
+</style>

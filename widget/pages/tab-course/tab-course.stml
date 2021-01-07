@@ -3,18 +3,26 @@
     <a-header>柚子英语教育</a-header>
 
     <a-tabs class="course-tabs" :param="tabsParam">
-      <a-tab title="标签1">
-        <a-section title="test">
-          <view>
-            <text>内容1</text>
-          </view>
-        </a-section>
+      <a-tab title="默认">
+
+        <a-card>
+          <img src="../../images/icon__tab--course-0.png" alt=""/>
+        </a-card>
+
       </a-tab>
-      <a-tab title="标签2">
-        <text>内容2</text>
+      <a-tab title="部分具名">
+        <a-card>
+          <text>我是内容</text>
+          <text _slot="header">我是头部</text>
+          <text _slot="footer">我是底部</text>
+        </a-card>
       </a-tab>
-      <a-tab title="标签3">
-        <text>内容3</text>
+      <a-tab title="顺序无关">
+        <a-card>
+          <text _slot="content">我是内容</text>
+          <text _slot="footer">我是底部</text>
+          <text _slot="header">我是头部</text>
+        </a-card>
       </a-tab>
     </a-tabs>
 
@@ -25,11 +33,12 @@ import AHeader from "../../components/a-header.stml";
 import ATab from "../../components/a-tab.stml";
 import ATabs from "../../components/a-tabs.stml";
 import ASection from "../../components/a-section.stml";
+import ACard from "../../components/a-card.stml";
 import {GET} from "../../script/req";
 
 export default {
   name: "tpl",
-  components: {ASection, AHeader, ATabs, ATab},
+  components: {ACard, ASection, AHeader, ATabs, ATab},
   apiready() {
     let course_category = api.getPrefs({
       sync: true,
