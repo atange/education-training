@@ -1,21 +1,19 @@
 <template>
   extendsClassStyleEvents.call(this,
   <view class="a-tabs">
-    <view class="a-tabs__nav">
-      {this.props.children.map((item,index)=>
-      <view class="a-tabs__nav--item" onclick={()=>this.props.param.current=index}>
-        <text
-            :class="'a-tabs__nav--item-text'+(index===this.props.param.current?' a-tabs__nav--item-text---active':'')">
+    <view class={mixedClass('a-tabs__nav',{'a-tabs__nav-scroll':this.scrollNav})}>
+      <view class={mixedClass('a-tabs__nav--item',{'a-tabs__nav--item-scroll':this.scrollNav})}
+            onClick={this.handleNavClick.bind(this,index)}
+            v-for="(item,index) in this.props.children">
+        <text :class="'a-tabs__nav-text'
+            + (index===this.props.param.current?' a-tabs__nav-text---active':'')">
           {item.attributes.title}
         </text>
       </view>
-      )}
       <view class="a-tabs__nav--line" style={this.lineStyle}></view>
     </view>
     <swiper autoplay={false} circular={false} :current={this.props.param.current}
-            onchange={({detail})=>this.props.param.current=detail.current}
-      class="a-tabs__content"
-      >
+            onchange={this.handleSwiperChange} class="a-tabs__content">
       <swiper-item v-for="tab in this.props.children">
         <scroll-view scroll-y="true" class="a-tabs__content--scroll-view">
           {tab}
@@ -28,15 +26,39 @@
 
 <script>
 
-import {extendsClassStyleEvents} from "./utils";
+import {extendsClassStyleEvents, mixedClass} from "./utils";
+import {colors} from "./theme";
 
 export default {
   name: "a-tabs",
   computed: {
     lineStyle() {
-      return {background: 'red'};
+
+      let offsetWidth = this.scrollNav ? api.winWidth / 4 : api.winWidth / this.props.children.length;
+      let offsetLeft = offsetWidth * this.props.param.current;
+      const left = offsetLeft + offsetWidth / 2;
+
+      return {
+        background: colors.MAIN,
+        width: '20px',
+        height: '2px',
+        transform: Number.isNaN(left) ? '' : `translateX(${left}px) translateX(-50%)`,
+      }
     },
-    swiperHeight() {
+    scrollNav() {
+      return this.props.children.length > 4;
+    }
+  },
+  methods: {
+    tabChanged(current, type) {
+      this.props.param.current = current;
+      this.props.onChange && this.props.onChange({current, type});
+    },
+    handleNavClick(current) {
+      this.tabChanged(current, 'click')
+    },
+    handleSwiperChange({detail: {current}}) {
+      this.tabChanged(current, 'swipe')
     }
   }
 }
@@ -57,6 +79,11 @@ export default {
   flex-shrink: 0;
 }
 
+.a-tabs__nav-scroll {
+  justify-content: flex-start;
+  overflow-x: scroll;
+}
+
 .a-tabs__content {
   flex: 1;
 }
@@ -67,19 +94,33 @@ export default {
 
 .a-tabs__nav--item {
   flex: 1 0 auto;
-  padding: 0 12px;
   justify-content: center;
   align-items: center;
+  padding: 0;
 }
 
-.a-tabs__nav--item-text {
+.a-tabs__nav--item-scroll {
+  width: 25%;
+}
+
+.a-tabs__nav-text {
   color: #666;
   font-size: 14px;
   font-weight: normal;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
-.a-tabs__nav--item-text---active {
-  color: #666;
+.a-tabs__nav-text---active {
+  color: #333;
   font-weight: bold;
+}
+
+.a-tabs__nav--line {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  z-index: 9;
+  transition: all 0.2s;
 }
 </style>

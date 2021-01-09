@@ -47,8 +47,9 @@ function slotHook(VNode) {
     }
 
     slotFilter(VNode);
+    slotFilter(VNode);
     slots = {};// 清空插槽容器 释放内存
-    console.log(VNode)
+    // console.log(VNode)
 
     return VNode;
 }
@@ -76,7 +77,18 @@ function extendsClassStyleEvents(VNode) {
     return VNode;
 }
 
+/**
+ * 混合class类
+ * @param cls
+ * @param extra
+ * @returns {string}
+ */
+function mixedClass(cls, extra) {
+    let classList = [cls];
+    Object.entries(extra).forEach(([key, val]) => val && classList.push(key));
+    return classList.join(' ');
+}
 
 export {
-    ref, toRef, slotHook, isMP, isApp, extendsClassStyleEvents
+    ref, toRef, slotHook, isMP, isApp, extendsClassStyleEvents, mixedClass
 }
