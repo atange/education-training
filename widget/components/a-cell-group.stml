@@ -1,0 +1,50 @@
+<template>
+  <view class="a-cell-group">
+    {this.props.title &&
+    <view class="a-cell-group_header">
+      <text class="a-cell-group_title">{this.props.title}</text>
+    </view>
+    }
+    <view class="a-cell-group_content">
+      {this.props.children}
+    </view>
+  </view>
+</template>
+
+<script>
+export default {
+  name: "a-cell-group",
+  install() {
+    const {props} = this;
+    // 最后一个cell 标记为last 方便实现last伪元素
+    if (props.children.length) {
+      let last = props.children[props.children.length - 1];
+      if (last.attributes) {
+        last.attributes.__last = true;
+      } else {
+        last.attributes = {__last: true};
+      }
+    }
+  }
+}
+</script>
+
+<style scoped>
+.a-cell-group {
+  background: #fff;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  margin: 16px;
+}
+
+.a-cell-group_title {
+  border-bottom: 1px solid #e8eaec;
+  padding: 14px 16px;
+  line-height: 1;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+
+</style>
