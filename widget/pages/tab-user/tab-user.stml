@@ -1,119 +1,71 @@
 <template name='tpl'>
-    <view class="page">
-        <safe-area class="header">
-            <text class="header__title">APICloud</text>
-        </safe-area>
-        <scroll-view class="main">
+  <view class="page">
+    <a-header>柚子英语教育</a-header>
+    <scroll-view style="flex: 1;">
+      <view class="user-panel">
+        <img src="../../images/icon__tab--user-1.png" alt="" class="user-avatar">
+        <text class="user-name">我的用户名</text>
+      </view>
 
-            <text class="h1">{{text}}</text>
-            <view class="item" v-for="[key,value,name] in list">
-                <text class="item__text">{{name}}: {{value}}</text>
-            </view>
+      <a-cell title="我的预约" value="好的" link="./my_order" imgIcon="../../images/icon__user-cell--alarm.png"/>
+      <a-cell title="我的线上课订单" imgIcon="../../images/icon__user-cell--order.png"/>
 
-        </scroll-view>
-        <safe-area class="footer">
-            <text class="footer__text">Copyright &copy; </text> <text class="footer__text">2020</text>
-        </safe-area>
 
-    </view>
+    </scroll-view>
+  </view>
 </template>
 <script>
-export default {
-    name: "tpl",
-    apiready() {
-        //like created
-    },
-    data() {
-        return {
-            text: "Hello APP!"
-        };
-    },
-    computed: {
-        list() {
-            const apiNames = {
-                version: "引擎版本",
-                systemType: "系统类型",
-                systemVersion: "系统版本",
-                deviceId: "设备标识",
-                deviceModel: "设备型号",
-                deviceName: "设备名称",
-                operator: "运营商名称",
-                connectionType: "网络状态",
-                winName: "窗口名字",
-                winWidth: "窗口宽度",
-                winHeight: "窗口高度",
-                appId: "应用ID",
-                appName: "应用名称",
-                appVersion: "应用版本"
-            };
+import AHeader from "../../components/a-header.stml";
+import ACellGroup from "../../components/a-cell-group.stml";
+import ACell from "../../components/a-cell.stml";
 
-            return Object.entries(api)
-                .filter(([key]) => apiNames[key])
-                .map(item => {
-                    return [...item, apiNames[item[0]]];
-                });
-        }
-    },
-    methods: {
-        btnAction(e) {
-            api.alert({
-                msg: e.currentTarget.dataset.info
-            });
-        }
+export default {
+  name: "tpl",
+  components: {ACell, ACellGroup, AHeader},
+  apiready() {
+  },
+  data() {
+    return {
+      text: "Hello APP!"
+    };
+  },
+  methods: {
+    btnAction(e) {
+      api.alert({
+        msg: e.currentTarget.dataset.info
+      });
     }
+  }
 };
 </script>
 <style>
 .page {
-    height: 100%;
-    background-color: white;
-}
-.header {
-    background: #81a9c3;
-    justify-content: center;
-    align-items: center;
-}
-.header__title {
-    color: #fff;
-    font-size: 18px;
-    font-weight: bold;
-    height: 50px;
-    line-height: 50px;
+  height: 100%;
+  background-color: white;
 }
 
-.main {
-    flex: 1;
-    padding: 15px;
+.user-panel {
+  width: 100%;
+  height: 170px;
+  background-color: #fdf9f5;
+  flex-flow: row nowrap;
+  align-items: center;
 }
 
-.h1 {
-    font-size: 24px;
+.user-avatar {
+  width: 60px;
+  height: 60px;
+  background: #EFEFEF;
+  border-radius: 50%;
+  border: 4px solid #F1C694;
+  margin: 20px;
 }
 
-.item {
-    flex-direction: row;
-    padding: 10px 0;
-}
-.item__text {
-    color: #333;
-    white-space: nowrap;
+.user-name {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333333;
+  line-height: 16px;
 }
 
-.item__value {
-    margin-left: 5px;
-}
-
-.footer {
-    background: #81a9c3;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-}
-
-.footer__text {
-    color: #fff;
-    font-size: 14px;
-    height: 30px;
-    line-height: 30px;
-}
 </style>
