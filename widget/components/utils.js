@@ -1,11 +1,11 @@
 /**
  * 判断当前是否是小程序环境
- * 2020-11-24  暂用 api.uiMode模拟
- * 后期需修正为  api.platform
+ * 2021年1月9日 暂用 api.appVersion模拟
+ console.log(api.appVersion)
  * @returns {boolean}
  */
 function isMP() {
-    return !api.uiMode;
+    return !api.appVersion;
 }
 
 /**
@@ -89,6 +89,37 @@ function mixedClass(cls, extra) {
     return classList.join(' ');
 }
 
+/**
+ * showModel组件对齐到微信小程序
+ * @param options
+ */
+function showModal({...options}) {
+    if (isMP()) {
+        return wx.showModal(options);
+    } else {
+        options.msg = options.content;
+        const showCancel = options.showCancel ?? true;
+        if (showCancel) {
+            api.confirm(options, _ => {
+                _result({..._, confirm: _.buttonIndex === 2, cancel: _.buttonIndex === 1})
+            });
+        } else {
+            api.alert(options, _ => {
+                _result({..._, confirm: _.buttonIndex === 1, cancel: false})
+            });
+        }
+        function _result(res) {
+            if (res) {
+                options.success && options.success(res);
+            } else {
+                options.fail && options.fail();
+            }
+            options.complete && options.complete(res);
+        }
+    }
+}
+
 export {
-    ref, toRef, slotHook, isMP, isApp, extendsClassStyleEvents, mixedClass
+    ref, toRef, slotHook, isMP, isApp, extendsClassStyleEvents, mixedClass,
+    showModal
 }
