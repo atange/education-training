@@ -1,10 +1,14 @@
 <template>
+  extendsClassStyleEvents.call(this,
   <view class="a-tab">
     {this.props.children}
   </view>
+  )
 </template>
 
 <script>
+
+import {extendsClassStyleEvents} from "./utils";
 
 export default {
   name: "a-tab"
