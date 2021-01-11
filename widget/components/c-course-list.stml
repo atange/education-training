@@ -1,6 +1,6 @@
 <template name='c-course-list'>
   <view class="page">
-    <a-header>柚子英语教育</a-header>
+    <a-header :left-icon="leftIcon">柚子英语教育</a-header>
     <a-tabs class="course-tabs" :param="tabsParam" onChange="tabChange">
       <a-tab class="course-tabs__item" :title="item.name" v-for="item in course_category">
         <text v-if="dataList[tabsParam.current]==='-'">正在加载中</text>
@@ -43,8 +43,9 @@ export default {
 
 
     let current = 0;
-
+    let leftIcon = false; // 头部返回按钮
     if (api.pageParam.id) {
+      leftIcon = true;
       for (let i = 0; i < course_category.length; i++) {
         if (course_category[i].id === api.pageParam.id) {
           current = i;
@@ -54,6 +55,7 @@ export default {
     }
 
     return {
+      leftIcon,
       tabsParam: {
         current: current,
         type: 'line',
@@ -67,23 +69,23 @@ export default {
     getCourseData() {
       if (this.data.dataList[this.data.tabsParam.current] === '-') {
 
-        api.toast({
-          msg: '开始加载' + this.data.tabsParam.current,
-          location: 'top'
-        })
+        // api.toast({
+        //   msg: '开始加载' + this.data.tabsParam.current,
+        //   location: 'top'
+        // })
 
         const currentItem = this.data.course_category[this.data.tabsParam.current];
         GET('i_alls/getCoursesList?categoryId=' + currentItem.id).then(data => {
           this.data.dataList[this.data.tabsParam.current] = data;
-          api.toast({
-            msg: '加载完成' + this.data.tabsParam.current,
-            location: 'middle'
-          })
+          // api.toast({
+          //   msg: '加载完成' + this.data.tabsParam.current,
+          //   location: 'middle'
+          // })
         })
       } else {
-        api.toast({
-          msg: '已加载过' + this.data.tabsParam.current
-        })
+        // api.toast({
+        //   msg: '已加载过' + this.data.tabsParam.current
+        // })
       }
     },
     tabChange(e) {
