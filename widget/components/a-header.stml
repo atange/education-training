@@ -4,8 +4,8 @@
 
     <view class="a-header__icon a-header__icon--left"
           onclick={this.onClickLeft}>
-      {this.props['left-icon'] &&<img src="../../components/img/icon__a-header--left-icon.png"
-                                      class="a-header__icon--img"/> }
+      {this.leftIcon && <img src="../../components/img/icon__a-header--left-icon.png"
+                             class="a-header__icon--img"/> }
     </view>
 
     <text class="a-header--text">{this.props.title || this.props.children}</text>
@@ -22,8 +22,12 @@ import {isApp} from "./utils";
 
 export default {
   name: "a-header",
-  installed() {
-    console.log(['this.props.leftIcon', this.props['left-icon']]);
+  install() {
+    if (typeof this.props['left-icon'] === 'undefined') {
+      this.leftIcon = true;
+    } else {
+      this.leftIcon = this.props['left-icon'];
+    }
   },
   methods: {
     onClickLeft() {
