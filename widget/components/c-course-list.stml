@@ -1,0 +1,146 @@
+<template name='c-course-list'>
+  <view class="page">
+    <a-header>柚子英语教育</a-header>
+    <a-tabs class="course-tabs" :param="tabsParam" onChange="tabChange">
+      <a-tab class="course-tabs__item" :title="item.name" v-for="item in course_category">
+        <text v-if="dataList[tabsParam.current]==='-'">正在加载中</text>
+        <view v-else-if="dataList[tabsParam.current].length" class="course-tabs__item--list">
+          <a-card v-for="(item,index) in dataList[tabsParam.current]" class="course-tabs__item--list__item">
+            <img _slot="content" class="course-tabs__item--list__item--cover" :src="item.cover"/>
+            <view _slot="footer" class="course-item__footer">
+              <view class="course-item__info">
+                <text class="course-item__info--title">{{ item.title }}</text>
+                <text class="course-item__info--price">{{ item.class_hour }}课时/{{ item.class_hour }}元</text>
+              </view>
+              <text class="course-tabs__item--list__item--introduction">{{ item.introduction }}</text>
+            </view>
+          </a-card>
+        </view>
+        <text v-else>没有相关数据哦</text>
+      </a-tab>
+    </a-tabs>
+  </view>
+</template>
+<script>
+import AHeader from "./a-header.stml";
+import ATab from "./a-tab.stml";
+import ATabs from "./a-tabs.stml";
+import ACard from "./a-card.stml";
+import {GET} from "../script/req";
+
+export default {
+  name: "c-course-list",
+  components: {ACard, AHeader, ATabs, ATab},
+  installed() {
+    this.getCourseData();
+  },
+  data() {
+    console.log(['data', api.pageParam.id])
+    const course_category = JSON.parse(api.getPrefs({
+      sync: true,
+      key: 'course_category'
+    }));
+
+
+    let current = 0;
+
+    if (api.pageParam.id) {
+      for (let i = 0; i < course_category.length; i++) {
+        if (course_category[i].id === api.pageParam.id) {
+          current = i;
+          break;
+        }
+      }
+    }
+
+    return {
+      tabsParam: {
+        current: current,
+        type: 'line',
+        color: 'red'
+      },
+      course_category,
+      dataList: new Array(course_category.length).fill('-')
+    };
+  },
+  methods: {
+    getCourseData() {
+      if (this.data.dataList[this.data.tabsParam.current] === '-') {
+
+        api.toast({
+          msg: '开始加载' + this.data.tabsParam.current,
+          location: 'top'
+        })
+
+        const currentItem = this.data.course_category[this.data.tabsParam.current];
+        GET('i_alls/getCoursesList?categoryId=' + currentItem.id).then(data => {
+          this.data.dataList[this.data.tabsParam.current] = data;
+          api.toast({
+            msg: '加载完成' + this.data.tabsParam.current,
+            location: 'middle'
+          })
+        })
+      } else {
+        api.toast({
+          msg: '已加载过' + this.data.tabsParam.current
+        })
+      }
+    },
+    tabChange(e) {
+      console.log(e);
+      this.getCourseData();
+    }
+  }
+};
+</script>
+<style>
+.page {
+  height: 100%;
+  background-color: #F8F8F8;
+}
+
+.a-tabs__nav {
+  background: #FFF;
+}
+
+.course-tabs__item--list__item {
+  margin: 15px;
+  background: #FFF;
+  box-shadow: 0 2px 6px #f3f3f3;
+  border: 1px solid #f3f3f3;
+  border-radius: 4px;
+}
+
+.course-tabs__item--list__item--cover {
+  width: 100%;
+  height: 194px;
+}
+
+.course-tabs__item--list__item--introduction {
+  margin-top: 15px;
+  white-space: pre-wrap;
+  font-size: 14px;
+  color: #666666;
+}
+
+.course-item__info {
+  flex-flow: row nowrap;
+}
+
+.course-item__info--title {
+  flex: 1;
+  color: #333;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.course-item__info--price {
+  font-size: 16px;
+  color: #FA6400;
+  font-weight: bold;
+}
+
+.a-card__footer {
+  padding: 15px 10px;
+}
+</style>

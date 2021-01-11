@@ -13,7 +13,7 @@
 
       <scroll-view class="main__menu" scroll-x v-if="homeData.course_category"
                    :style="'height:'+(api.winWidth/4+20)+'px;'">
-        <view class="main__menu--item" v-for="item in homeData.course_category"
+        <view class="main__menu--item" v-for="item in homeData.course_category" @click="goto(item)"
               :style="'width:'+api.winWidth/4+'px;'">
           <img :src="item.image" class="main__menu--item-img"/>
           <text class="main__menu--item-text">{{ item.name }}</text>
@@ -74,7 +74,13 @@ export default {
       })
     },
     swiperChange(e) {
-      console.log(JSON.stringify(e))
+      console.log(JSON.stringify(e.target.dataset.id))
+    },
+    goto(pageParam) {
+      api.openWin({
+        name: 'course-list',
+        url: '../course-list/course-list.stml', pageParam
+      })
     },
     test() {
       showModal({
