@@ -32,17 +32,18 @@ export default {
 
 .a-section__header {
   flex-direction: row;
+  align-items: center;
+  margin-bottom: 15px;
 }
 
 .a-section__header--solid {
   width: 3px;
   height: 18px;
   background: #F1C694;
-  margin: 5px 0;
+  margin-right: 6px;
 }
 
 .a-section__header--text {
-  padding: 5px 0 15px 6px;
   line-height: 1;
   font-size: 18px;
   font-weight: bold;
