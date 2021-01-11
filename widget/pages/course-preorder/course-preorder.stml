@@ -1,0 +1,68 @@
+<template>
+  <view class="page">
+    <a-header title="预约报名"/>
+    <scroll-view style="flex: 1;padding:15px;">
+
+      <input class="course-input" type="text" placeholder="姓名"/>
+      <input class="course-input" type="text" placeholder="手机号" keyboard-type="tel"/>
+      <input class="course-input" type="text" placeholder="来校时间"/>
+      <textarea class="course-input" placeholder="备注" auto-height/>
+
+
+      <view class="course-btn">
+        <text class="course-btn--text">立即预约</text>
+      </view>
+
+    </scroll-view>
+  </view>
+</template>
+
+<script>
+import AHeader from "../../components/a-header.stml";
+
+export default {
+  name: "course-preorder",
+  components: {AHeader}
+}
+</script>
+
+<style scoped>
+.page {
+  height: 100%;
+  background: #FFF;
+}
+
+
+.course-input {
+  background: #F8F8F8;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+input {
+  padding: 0 10px;
+  height: 52px;
+}
+
+textarea {
+  padding: 20px 10px;
+  height: 200px;
+}
+
+.course-btn {
+  width: 100%;
+  height: 44px;
+  background: #F1C694;
+  border-radius: 4px;
+  justify-content: center;
+  align-items: center;
+}
+
+.course-btn--text {
+  font-size: 16px;
+  font-weight: 500;
+  color: #FFFFFF;
+  line-height: 16px;
+}
+</style>
