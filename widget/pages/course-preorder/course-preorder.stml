@@ -3,14 +3,20 @@
     <a-header title="预约报名"/>
     <scroll-view style="flex: 1;padding:15px;">
 
-      <input class="course-input" type="text" placeholder="姓名"/>
-      <input class="course-input" type="text" placeholder="手机号" keyboard-type="tel"/>
-      <input class="course-input" type="text" placeholder="来校时间"/>
-      <textarea class="course-input" placeholder="备注" auto-height/>
+      <input class="course-input" id="name" type="text" placeholder="姓名"/>
+      <input class="course-input" id="mobile" type="text" placeholder="手机号" keyboard-type="tel"/>
+      <picker :range="dateList" id="multiSelector" mode="multiSelector" value={multiSelectorValue}
+              onChange={this.multiSelectorChange}>
+        <view class="course-input come-time">
+          <text class="come-time--text">来校时间</text>
+          <text class="date-value">{{ comeTime }}</text>
+        </view>
+      </picker>
+      <textarea class="course-input" placeholder="备注" id="remark"/>
 
 
-      <view class="course-btn">
-        <text class="course-btn--text">立即预约</text>
+      <view class="course-btn" @click="submit">
+        <text class="course-btn--text">提交</text>
       </view>
 
     </scroll-view>
@@ -19,10 +25,64 @@
 
 <script>
 import AHeader from "../../components/a-header.stml";
+import {POST} from "../../script/req";
 
 export default {
   name: "course-preorder",
-  components: {AHeader}
+  components: {AHeader},
+  data() {
+    return {
+      comeTime: '',
+      dateList: [[2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]],
+      multiSelectorValue: [4, 0]
+    }
+  },
+  methods: {
+    multiSelectorChange(e) {
+      this.data.multiSelectorValue = e.detail.value;
+      this.data.comeTime = this.data.dateList[0][this.data.multiSelectorValue[0]] + '-' + this.data.dateList[1][this.data.multiSelectorValue[1]];
+    },
+    submit() {
+      const name = $('#name').value;
+      const mobile = $('#mobile').value;
+      const remark = $('#remark').value;
+      const comeTime = this.data.comeTime;
+
+
+
+
+
+      if (!name) {
+        return api.toast({
+          msg: '请输入姓名'
+        })
+      }
+      if (!mobile) {
+        return api.toast({
+          msg: '请输入手机号'
+        })
+      }
+
+      if (!/^1[3456789]\d{9}$/.test(mobile)) {
+        return api.toast({
+          msg: '请输入正确的手机号'
+        })
+      }
+
+      if (!comeTime) {
+        return api.toast({
+          msg: '请输入来校时间'
+        })
+      }
+
+      POST('i_alls/appointmentRegistration', {
+        name, mobile, comeTime
+      }).then(data => {
+        console.log(JSON.stringify(data))
+      })
+
+    }
+  }
 }
 </script>
 
@@ -34,15 +94,47 @@ export default {
 
 
 .course-input {
+  width: 100%;
+  box-sizing: border-box;
   background: #F8F8F8;
   border-radius: 4px;
   margin-bottom: 10px;
-  width: 100%;
+  font-size: 14px;
 }
 
 input {
-  padding: 0 10px;
   height: 52px;
+  padding: 0 10px;
+}
+
+.come-time {
+  height: 52px;
+  justify-content: center;
+}
+
+.come-time--text {
+  color: #999;
+  font-size: 14px;
+  height: 52px;
+  line-height: 52px;
+  flex: 1;
+  padding: 0 10px;
+}
+
+.date-value {
+  color: #666;
+  font-size: 14px;
+  height: 52px;
+  line-height: 52px;
+}
+
+.come-time {
+  display: flex;
+  align-self: center;
+  line-height: 52px;
+  border: 1px solid #dfdfdf;
+  justify-content: flex-start;
+  flex-flow: row nowrap;
 }
 
 textarea {

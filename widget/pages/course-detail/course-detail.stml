@@ -74,9 +74,17 @@ export default {
     }
     , nextStep() {
       if (this.data.courseData.type === 2) {
-        // 去支付
+        api.openWin({
+          name: 'course-pay',
+          url: '../course-pay/course-pay.stml',
+          pageParam: api.pageParam
+        })
       } else {
-        //去预约
+        api.openWin({
+          name: 'course-preorder',
+          url: '../course-preorder/course-preorder.stml',
+          pageParam: api.pageParam
+        })
       }
     }
   }
