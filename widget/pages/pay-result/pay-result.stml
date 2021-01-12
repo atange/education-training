@@ -1,0 +1,31 @@
+<template>
+  <view class="page">
+    <a-header title="预约报名"/>
+
+    <b-notice icon="../../images/icon__notice--success.png" title="支付成功" desc="这是一段测试说明"
+              btn-text="确定"/>
+  </view>
+</template>
+
+<script>
+import AHeader from "../../components/a-header.stml";
+import BNotice from "../../components/b-notice.stml";
+
+export default {
+  name: "pay-result",
+  components: {BNotice, AHeader},
+  methods: {
+    test() {
+      console.log(this)
+    }
+  }
+}
+</script>
+
+<style scoped>
+.page {
+  background: #F8F8F8;
+  height: 100%;
+}
+
+</style>
