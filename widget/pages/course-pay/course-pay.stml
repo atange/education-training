@@ -1,0 +1,105 @@
+<template>
+  <view class="page">
+    <a-header>预约报名</a-header>
+
+    <scroll-view style="flex: 1;">
+      <view class="pay-top">
+        <img :src="cover" class="cover"/>
+        <view class="info">
+          <text class="title">{{ title }}</text>
+          <text class="price"> {{ class_hour }}课时 / {{ price }}</text>
+        </view>
+      </view>
+
+      <view class="intro">
+        <a-cell title="课程类型" value="线上直播课"/>
+        <a-cell title="开课时间" value="5月30日 09:00"/>
+        <a-cell title="购买须知">
+          <text style="font-size: 14px;color: #666;">本课程由线上直播授课，请在购买课程后下载xxAPP，并 使用您登录小程序的手机号进行登录，登录后即可同步您 购买的课程进行上课。
+          </text>
+        </a-cell>
+      </view>
+
+    </scroll-view>
+
+    <view class="pay-btn">
+      <text class="pay-btn__text">去支付3500元</text>
+    </view>
+
+    <safe-area></safe-area>
+
+  </view>
+</template>
+
+<script>
+import AHeader from "../../components/a-header.stml";
+import ACell from "../../components/a-cell.stml";
+
+export default {
+  name: "course-pay",
+  components: {ACell, AHeader},
+  data() {
+    const {title, class_hour, price, cover} = api.pageParam;
+    return {title, class_hour, price, cover};
+  }
+}
+</script>
+
+<style scoped>
+.page {
+  background: #F8F8F8;
+  height: 100%;
+}
+
+.pay-top {
+  padding: 20px 15px;
+  flex-flow: row nowrap;
+  align-items: center;
+  background: #FFF;
+}
+
+.cover {
+  width: 124px;
+  height: 70px;
+}
+
+.info {
+  margin-left: 15px;
+}
+
+.title {
+  color: #333;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.price {
+  font-size: 16px;
+  font-weight: bold;
+  color: #FA6400;
+  line-height: 16px;
+  font-family: monospace;
+}
+
+.intro {
+  margin-top: 10px;
+  background: #FFF;
+}
+
+.pay-btn {
+  height: 44px;
+  background: #F1C694;
+  border-radius: 4px;
+  margin: 0 15px;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.pay-btn__text {
+  color: #FFF;
+  font-size: 16px;
+  font-weight: bold;
+}
+</style>
