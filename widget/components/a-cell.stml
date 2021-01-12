@@ -1,12 +1,21 @@
 <template>
   extendsClassStyleEvents.call(this,
-  <view class="a-cell" onclick={this.handleCellClick}>
-    {this.props.imgIcon&&<img src={this.props.imgIcon} class="a-cell__icon--img"/>}
-    <view class="a-cell__main">
-      <text class="a-cell__title--text-title">{this.props.title}</text>
-      <text class="a-cell__title--text-value">{this.props.value}</text>
+  <view class="a-cell__root" onclick={this.handleCellClick}>
+    <view class="a-cell">
+      {this.props.imgIcon&&<img src={this.props.imgIcon} class="a-cell__icon--img"/>}
+      <view class="a-cell__main">
+        <text class="a-cell__title--text-title">{this.props.title}</text>
+        <text class="a-cell__title--text-value">{this.props.value}</text>
+      </view>
+      {this.props.link&&<img src="../../components/img/icon__a-cell-arrow-right.png" class="a-cell__link--arrow"/>}
     </view>
-    {this.props.link&&<img src="../../components/img/icon__a-cell-arrow-right.png" class="a-cell__link--arrow"/>}
+
+    {this.props.children.length!==0 &&
+    <view class="a-cell__content">
+      {this.props.children}
+    </view>
+    }
+
   </view>
   )
 </template>
@@ -36,9 +45,12 @@ export default {
 </script>
 
 <style scoped>
+.a-cell__root {
+  border-bottom: 1px solid #F1F1F1;
+}
+
 .a-cell {
   flex-flow: row nowrap;
-  border-bottom: 1px solid #F1F1F1;
 }
 
 .a-cell__icon--img {
@@ -46,6 +58,10 @@ export default {
   height: 20px;
   width: 20px;
   margin-left: 18px;
+}
+
+.a-cell__content {
+  padding: 0 15px 15px 15px;
 }
 
 .a-cell__main {
