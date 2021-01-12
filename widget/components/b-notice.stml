@@ -1,0 +1,78 @@
+<template>
+  <view class="b-notice">
+    {this.props.icon&&<img src={this.props.icon} alt="" class="b-notice__icon--img">}
+    {this.props.title&&
+    <text class="b-notice__title--text">
+      {this.props.title}
+    </text>
+    }
+    {this.props.desc&&
+    <text class="b-notice__desc--text"> {this.props.desc}</text>
+    }
+
+    {this.props['btn-text']&&
+    <view class="b-notice__btn" onclick={this.props['on-btn-click']}>
+      <view class="b-notice__button">
+        <text class="b-notice__button--text">{this.props['btn-text']}</text>
+      </view>
+    </view>
+    }
+  </view>
+</template>
+
+<script>
+export default {
+  name: "b-notice"
+}
+</script>
+
+<style scoped>
+.b-notice {
+  justify-content: center;
+  align-items: center;
+}
+
+.b-notice__icon--img {
+  width: 100px;
+  height: 100px;
+  margin-top: 40px;
+}
+
+.b-notice__title--text {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.b-notice__desc--text {
+  margin-top: 6px;
+  color: #999;
+  font-size: 15px;
+}
+
+.b-notice__btn {
+  margin-top: 30px;
+  flex-flow: row;
+  flex: 1;
+  width: 100%;
+}
+
+.b-notice__button {
+  height: 44px;
+  background: #F1C694;
+  border-radius: 4px;
+  box-sizing: border-box;
+  justify-content: center;
+  flex: 1;
+  margin: 20px;
+}
+
+.b-notice__button--text {
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+}
+</style>
