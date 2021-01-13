@@ -5,25 +5,7 @@
 
     <scroll-view v-if="courseData" style="flex: 1;">
 
-      <view class="cd__top">
-
-        <img :src="courseData.cover" alt="" class="cd__top--cover"/>
-        <text class="cd__top--title">{{ courseData.title }}</text>
-        <text class="cd__top--introduction">{{ courseData.introduction }}</text>
-
-        <view class="cd__top--footer">
-
-          <text class="cd__top--price">
-            {{ courseData.class_hour }}课时 / {{ courseData.price }}
-          </text>
-
-          <view v-if="courseData.video_path" style="flex-flow: row;" @click="playVideo">
-            <img class="cd__top--icon-video" src="../../images/icon__course-detail--video.png" alt=""/>
-            <text class="cd__top--goto">查看公开课</text>
-          </view>
-        </view>
-
-      </view>
+      <b-course :courseData="courseData"/>
 
 
       <a-section title="课程详情" class="cd--card">
@@ -43,10 +25,11 @@
 import AHeader from "../../components/a-header.stml";
 import {GET} from "../../script/req";
 import ASection from "../../components/a-section.stml";
+import BCourse from "../../components/b-course.stml";
 
 export default {
   name: "course-detail",
-  components: {ASection, AHeader},
+  components: {BCourse, ASection, AHeader},
   data() {
     return {
       courseData: false
@@ -63,13 +46,6 @@ export default {
 
       GET('i_alls/getCourseDetail?courseId=' + api.pageParam.id).then(data => {
         this.data.courseData = data;
-      })
-    },
-    playVideo() {
-      api.openWin({
-        name: 'play-video',
-        url: '../play-video/play-video.stml',
-        pageParam: api.pageParam
       })
     }
     , nextStep() {
@@ -95,53 +71,6 @@ export default {
 .page {
   height: 100%;
   background: #F8F8F8;
-}
-
-.cd__top {
-  padding: 15px;
-  background: #FFF;
-}
-
-.cd__top--cover {
-  width: 100%;
-  height: 194px;
-}
-
-.cd__top--title {
-  color: #333;
-  font-size: 16px;
-  font-weight: bold;
-  margin: 15px 0;
-}
-
-.cd__top--introduction {
-  font-size: 14px;
-  color: #666;
-  margin-bottom: 15px;
-}
-
-.cd__top--footer {
-  flex-flow: row nowrap;
-}
-
-.cd__top--price {
-  font-size: 16px;
-  font-weight: bold;
-  color: #FA6400;
-  line-height: 16px;
-  font-family: monospace;
-  flex: 1;
-}
-
-.cd__top--icon-video {
-  width: 20px;
-  height: 20px;
-}
-
-.cd__top--goto {
-  font-size: 14px;
-  color: #E5BA87;
-  font-weight: bold;
 }
 
 .cd--card {
