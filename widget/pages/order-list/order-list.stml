@@ -1,0 +1,75 @@
+<template>
+  <view class="page">
+    <a-header>我的订单</a-header>
+    <scroll-view style="flex: 1;">
+      <view class="ol-item">
+        <view class="ol-item__header">
+          <text class="ol-item__header--title">托福基础班</text>
+          <text class="ol-item__header--status"> • 已完成</text>
+        </view>
+
+        <view class="ol-item__content">
+          <text class="ol-item__content--li ol-item__content--order">订单号：202005439960589</text>
+          <text class="ol-item__content--li">支付金额：3500元</text>
+        </view>
+
+      </view>
+    </scroll-view>
+  </view>
+</template>
+
+<script>
+import AHeader from "../../components/a-header.stml";
+import ACard from "../../components/a-card.stml";
+
+export default {
+  name: "order-list",
+  components: {ACard, AHeader}
+}
+</script>
+
+<style scoped>
+.page {
+  height: 100%;
+  background: #F8F8F8;
+}
+
+.ol-item {
+  background: #FFFFFF;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  border-radius: 4px;
+  margin: 10px;
+}
+
+.ol-item__header {
+  flex-flow: row nowrap;
+  padding: 20px 10px;
+  border-bottom: 1px solid #F1F1F1;
+  box-shadow: 0 1px 0 #F1F1F1;
+
+}
+
+.ol-item__header--title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333333;
+  flex: 1;
+}
+
+.ol-item__header--status {
+  font-size: 14px;
+}
+
+.ol-item__content {
+  padding: 10px;
+}
+
+.ol-item__content--order {
+  margin-bottom: 10px;
+}
+
+.ol-item__content--li {
+  color: #999;
+  font-size: 14px;
+}
+</style>
