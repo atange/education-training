@@ -1,6 +1,6 @@
 <template name='tab-home'>
   <view class="page">
-    <a-header>柚子英语教育</a-header>
+    <a-header :left-icon="false">柚子英语教育</a-header>
     <!--    <a-header title="柚子英语教育"/>-->
     <scroll-view class="main" scroll-y>
       <swiper autoplay circular class="main__swiper" style="margin: 10px 0;"
