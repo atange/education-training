@@ -1,0 +1,88 @@
+<template>
+  <view class="page">
+    <a-header>我的预定</a-header>
+    <scroll-view style="flex: 1;">
+
+      <view class="pl-item">
+        <view style="flex: 1;">
+          <view class="pl-item__header">
+            <text class="pl-item__header--title">
+              托福基础班
+            </text>
+            <text class="pl-item__header--tag">预约中</text>
+          </view>
+          <text class="pl-item__content--time">预约时间：2020-05-20 12:21:37</text>
+        </view>
+        <img class="pl-item__content--arrow" src="../../images/icon__preorder-list--item-arrow.png" alt="">
+      </view>
+      <view class="pl-item">
+        <view style="flex: 1;">
+          <view class="pl-item__header">
+            <text class="pl-item__header--title">
+              托福基础班
+            </text>
+            <text class="pl-item__header--tag">预约中</text>
+          </view>
+          <text class="pl-item__content--time">预约时间：2020-05-20 12:21:37</text>
+        </view>
+        <img class="pl-item__content--arrow" src="../../images/icon__preorder-list--item-arrow.png" alt="">
+      </view>
+    </scroll-view>
+  </view>
+</template>
+
+<script>
+import AHeader from "../../components/a-header.stml";
+
+export default {
+  name: "preorder-list",
+  components: {AHeader}
+}
+</script>
+
+<style scoped>
+.page {
+  height: 100%;
+  background-color: #F8F8F8;;
+}
+
+.pl-item {
+  flex-flow: row nowrap;
+  align-items: center;
+  background: #FFFFFF;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  border-radius: 4px;
+  padding: 20px 10px;
+  margin: 10px 15px 0;
+}
+
+.pl-item__header {
+  flex-flow: row nowrap;
+}
+
+.pl-item__header--title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333333;
+}
+
+.pl-item__header--tag {
+  border-radius: 2px;
+  font-size: 12px;
+  padding: 3px 6px;
+  background: #F1C694;
+  color: #fff;
+  margin-left: 10px;
+}
+
+.pl-item__content--time {
+  margin-top: 14px;
+  color: #999;
+  font-size: 14px;
+}
+
+.pl-item__content--arrow {
+  width: 18px;
+  height: 18px;
+}
+</style>
