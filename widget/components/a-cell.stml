@@ -1,9 +1,10 @@
 <template>
   extendsClassStyleEvents.call(this,
-  <view class="a-cell__root" onclick={this.handleCellClick}>
+  <view class={mixedClass('a-cell__root',{['a-cell__root--type-'+this.props.type]:this.props.type})}
+        onclick={this.handleCellClick}>
     <view class="a-cell">
       {this.props.imgIcon&&<img src={this.props.imgIcon} class="a-cell__icon--img"/>}
-      <view class="a-cell__main">
+      <view class={mixedClass('a-cell__main',{['a-cell__main--type-'+this.props.type]:this.props.type})}>
         <text class="a-cell__title--text-title">{this.props.title}</text>
         <text class="a-cell__title--text-value">{this.props.value}</text>
       </view>
@@ -49,9 +50,14 @@ export default {
   border-bottom: 1px solid #F1F1F1;
 }
 
+.a-cell__root--type-plain {
+  border: none;
+}
+
 .a-cell {
   flex-flow: row nowrap;
 }
+
 
 .a-cell__icon--img {
   align-self: center;
@@ -69,6 +75,10 @@ export default {
   flex: 1;
   margin: 18px;
   flex-flow: row nowrap;
+}
+
+.a-cell__main--type-plain {
+  margin: 9px 0;
 }
 
 .a-cell__title--text-title {
