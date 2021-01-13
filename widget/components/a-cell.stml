@@ -34,11 +34,17 @@ export default {
       if (this.props.link) {
         let options = {};
         if (typeof this.props.link === 'string') {
-          options.url = this.props.link;
-          options.name = this.props.link;
+          if (this.props.link.endsWith('.stml')) {
+            options.name = this.props.link.split('/').pop().replace('.stml', '');
+            options.url = this.props.link;
+          } else {
+            options.name = this.props.link;
+            options.url = `../${this.props.link}/${this.props.link}.stml`;
+          }
         } else {
           options = this.props.link;
         }
+        console.log(['a-cell:link', JSON.stringify(options)]);
         api.openWin(options);
       } else if (this.props.onClick) {
         this.props.onClick(ev);
