@@ -45,8 +45,6 @@ export default {
   flex-flow: row nowrap;
   padding: 20px 10px;
   border-bottom: 1px solid #F1F1F1;
-  box-shadow: 0 1px 0 #F1F1F1;
-
 }
 
 .ol-item__header--title {
