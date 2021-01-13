@@ -1,10 +1,10 @@
 <template>
   extendsClassStyleEvents.call(this,
-  <view class={mixedClass('a-cell__root',{['a-cell__root--type-'+this.props.type]:this.props.type})}
+  <view class={mixedClass('a-cell__root',{['a-cell__root--type-'+(this.props.type||'default')]:true})}
         onclick={this.handleCellClick}>
     <view class="a-cell">
       {this.props.imgIcon&&<img src={this.props.imgIcon} class="a-cell__icon--img"/>}
-      <view class={mixedClass('a-cell__main',{['a-cell__main--type-'+this.props.type]:this.props.type})}>
+      <view class={mixedClass('a-cell__main',{['a-cell__main--type-'+(this.props.type||'default')]:true})}>
         <text class="a-cell__title--text-title">{this.props.title}</text>
         <text class="a-cell__title--text-value">{this.props.value}</text>
       </view>
@@ -26,6 +26,9 @@ import {extendsClassStyleEvents, mixedClass} from "./utils";
 
 export default {
   name: "a-cell",
+  install() {
+    this.props.type = 'default';
+  },
   methods: {
     handleCellClick(ev) {
       if (this.props.link) {
@@ -47,6 +50,9 @@ export default {
 
 <style scoped>
 .a-cell__root {
+}
+
+.a-cell__root--type-default {
   border-bottom: 1px solid #F1F1F1;
 }
 
@@ -73,8 +79,11 @@ export default {
 .a-cell__main {
   align-self: center;
   flex: 1;
-  margin: 18px;
   flex-flow: row nowrap;
+}
+
+.a-cell__main--type-default {
+  margin: 18px;
 }
 
 .a-cell__main--type-plain {
