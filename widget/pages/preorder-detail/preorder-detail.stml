@@ -1,19 +1,22 @@
 <template name="preorder-detail">
   <view class="page">
     <a-header>预约详情</a-header>
-    <scroll-view style="flex: 1;">
-      <b-course :courseData="courseData"/>
-      <a-section title="课程详情" style="margin-top: 10px;">
-        <a-cell type="plain" title="课程名称" value="线上直播课"/>
-        <a-cell type="plain" title="支付金额" value="3500.00元"/>
-        <a-cell type="plain" title="订单编号" value="202005439960589"/>
-        <a-cell type="plain" title="创建时间" value="2020-05-29 12:32:15"/>
-        <a-cell type="plain" title="付款时间" value="2020-05-29 12:32:15"/>
+    <scroll-view style="flex: 1;" v-if="detail">
+      <b-course :courseData="detail.rel_course_id"/>
+      <a-section title="预约信息" style="margin-top: 10px;">
+        <a-cell type="plain" title="预约时间" :value="timer(detail.create_time)"/>
+        <a-cell type="plain" title="预约姓名" :value="detail.name"/>
+        <a-cell type="plain" title="手机号" :value="detail.mobile"/>
+        <a-cell type="plain" title="备注" :value="detail.remark"/>
       </a-section>
     </scroll-view>
-    <view class="cd__bottom--btn" @click="nextStep">
-      <text class="cd__bottom--text">{courseData.type===2?'立即报名':'立即预约'}</text>
+    <view class="cd__bottom--btn" @click="nextStep" v-if="detail.status===1" style="background: #F1C694;">
+      <text class="cd__bottom--text">取消预约</text>
     </view>
+    <view class="cd__bottom--btn" v-else style="background: #CCC;">
+      <text class="cd__bottom--text">已取消</text>
+    </view>
+
     <safe-area></safe-area>
 
   </view>
@@ -24,19 +27,41 @@ import AHeader from "../../components/a-header.stml";
 import BCourse from "../../components/b-course.stml";
 import ACell from "../../components/a-cell.stml";
 import ASection from "../../components/a-section.stml";
+import {GET, POST} from "../../script/req";
+import {showModal, timer} from "../../components/utils";
 
 export default {
   name: "preorder-detail",
   components: {BCourse, AHeader, ACell, ASection},
   data() {
     return {
-      courseData: {
-        "id": "b794f360-c1f2-11ea-ac75-8d1eaf7aa585",
-        "title": "托福提高班",
-        "introduction": "针对性地讲解托福考试中的考点和学生们的问题，听说读写核心考点讲授，学习效果显著。",
-        "class_hour": 20,
-        "price": 3500,
-        "cover": "http://a0a67a2d94d23442aaa3.qiniucdn.apicloud-system.com/apicloud/00742e958766a158e4f76567a251d881.png"
+      detail: false
+    }
+  },
+  installed() {
+    this.getDetail();
+  },
+  methods: {
+    getDetail() {
+      GET('i_alls/appointmentDetail?appointId=' + (api.pageParam.id || '6e653230-5645-11eb-b53a-d3f0db81efe0')).then(data => {
+        this.data.detail = data[0];
+      })
+    },
+    nextStep() {
+      if (this.data.detail.status === 1) {
+        showModal({
+          title: '取消预约',
+          content: "您确定要取消本次预约吗",
+          success: res => {
+            if (res.confirm) {
+              POST('i_alls/cancelAppointment', {
+                appointId: api.pageParam.id
+              }).then(_ => {
+                this.data.detail.status = 2;
+              })
+            }
+          }
+        })
       }
     }
   }
@@ -51,7 +76,6 @@ export default {
 
 .cd__bottom--btn {
   height: 50px;
-  background: #F1C694;
   justify-content: center;
   align-items: center;
   margin: 15px;

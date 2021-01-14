@@ -3,7 +3,7 @@
     <a-header>我的预定</a-header>
     <scroll-view style="flex: 1;">
 
-      <view class="pl-item" v-for="pre in list">
+      <view class="pl-item" v-for="pre in list" @click="intoDetail(pre)">
         <view style="flex: 1;">
           <view class="pl-item__header">
             <text class="pl-item__header--title">
@@ -57,6 +57,12 @@ export default {
     getList() {
       GET('i_alls/mineAppointment?userId=' + (new UserManager()).data.id).then(data => {
         this.data.list = data;
+      })
+    }, intoDetail(pageParam) {
+      api.openWin({
+        name: 'preorder-detail',
+        url: '../preorder-detail/preorder-detail.stml',
+        pageParam
       })
     }
   }
