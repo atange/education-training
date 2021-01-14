@@ -75,7 +75,7 @@ export default {
       }
 
       POST('i_alls/appointmentRegistration', {
-        name, mobile, comeTime, remark, courseId: api.pageParam.courseId, userId: this.data.um.data.userId
+        name, mobile, comeTime, remark, courseId: api.pageParam.id, userId: this.data.um.data.id
       }).then(_ => {
         api.openWin({
           name: 'pay-result',

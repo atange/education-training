@@ -3,40 +3,63 @@
     <a-header>我的预定</a-header>
     <scroll-view style="flex: 1;">
 
-      <view class="pl-item">
+      <view class="pl-item" v-for="pre in list">
         <view style="flex: 1;">
           <view class="pl-item__header">
             <text class="pl-item__header--title">
-              托福基础班
+              {{ pre.rel_course_id.title }}
             </text>
-            <text class="pl-item__header--tag">预约中</text>
+            <text class="pl-item__header--tag" v-if="pre.status===1" style="background: #F1C694;">预约中</text>
+            <text class="pl-item__header--tag" v-else style="background: #CCC;">已取消</text>
           </view>
-          <text class="pl-item__content--time">预约时间：2020-05-20 12:21:37</text>
+          <text class="pl-item__content--time">预约时间：{{ timer(pre.create_time) }}</text>
         </view>
         <img class="pl-item__content--arrow" src="../../images/icon__preorder-list--item-arrow.png" alt="">
       </view>
-      <view class="pl-item">
-        <view style="flex: 1;">
-          <view class="pl-item__header">
-            <text class="pl-item__header--title">
-              托福基础班
-            </text>
-            <text class="pl-item__header--tag">预约中</text>
-          </view>
-          <text class="pl-item__content--time">预约时间：2020-05-20 12:21:37</text>
-        </view>
-        <img class="pl-item__content--arrow" src="../../images/icon__preorder-list--item-arrow.png" alt="">
-      </view>
+
     </scroll-view>
   </view>
 </template>
 
 <script>
 import AHeader from "../../components/a-header.stml";
+import {GET} from "../../script/req";
+import UserManager from "../../script/UserManager";
+import {showModal, timer} from "../../components/utils";
 
 export default {
   name: "preorder-list",
-  components: {AHeader}
+  components: {AHeader},
+  data() {
+    return {
+      list: []
+    }
+  },
+  installed() {
+    this.um = new UserManager();
+    if (this.um.data) {
+      this.getList();
+    } else {
+      showModal({
+            title: "需要登录",
+            content: "查看您的预约订单需要先登录账号",
+            showCancel: false,
+            success: res => {
+              if (res.confirm) {
+                api.closeWin();
+              }
+            }
+          }
+      )
+    }
+  },
+  methods: {
+    getList() {
+      GET('i_alls/mineAppointment?userId=' + (new UserManager()).data.id).then(data => {
+        this.data.list = data;
+      })
+    }
+  }
 }
 </script>
 
@@ -70,7 +93,6 @@ export default {
   border-radius: 2px;
   font-size: 12px;
   padding: 3px 6px;
-  background: #F1C694;
   color: #fff;
   margin-left: 10px;
 }

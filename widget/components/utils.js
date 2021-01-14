@@ -108,6 +108,7 @@ function showModal({...options}) {
                 _result({..._, confirm: _.buttonIndex === 1, cancel: false})
             });
         }
+
         function _result(res) {
             if (res) {
                 options.success && options.success(res);
@@ -119,7 +120,16 @@ function showModal({...options}) {
     }
 }
 
+/**
+ * 快速格式化时间
+ * @param time
+ * @returns {string}
+ */
+function timer(time) {
+    return new Date(new Date(time) - 0 - new Date().getTimezoneOffset() * 60 * 1000).toJSON().replace('T', ' ').slice(0, -5);
+}
+
 export {
     ref, toRef, slotHook, isMP, isApp, extendsClassStyleEvents, mixedClass,
-    showModal
+    showModal, timer
 }
