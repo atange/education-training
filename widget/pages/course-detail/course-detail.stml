@@ -3,7 +3,7 @@
   <view class="page">
     <a-header title="课程详情"/>
 
-    <scroll-view v-if="courseData" style="flex: 1;">
+    <scroll-view v-if="courseData" style="flex: 1;" bounces="false">
 
       <b-course :courseData="courseData"/>
 
