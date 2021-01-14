@@ -34,26 +34,28 @@ export default {
     return {
       list: []
     }
-  },
-  installed() {
-    this.um = new UserManager();
-    if (this.um.data) {
-      this.getList();
-    } else {
-      showModal({
-            title: "需要登录",
-            content: "查看您的预约订单需要先登录账号",
-            showCancel: false,
-            success: res => {
-              if (res.confirm) {
-                api.closeWin();
-              }
-            }
-          }
-      )
-    }
+  }, onshow() {
+    this.init();
   },
   methods: {
+    init() {
+      this.um = new UserManager();
+      if (this.um.data) {
+        this.getList();
+      } else {
+        showModal({
+              title: "需要登录",
+              content: "查看您的预约订单需要先登录账号",
+              showCancel: false,
+              success: res => {
+                if (res.confirm) {
+                  api.closeWin();
+                }
+              }
+            }
+        )
+      }
+    },
     getList() {
       GET('i_alls/mineAppointment?userId=' + (new UserManager()).data.id).then(data => {
         this.data.list = data;
