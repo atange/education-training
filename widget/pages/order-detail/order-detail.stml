@@ -2,33 +2,41 @@
   <view class="page">
     <a-header>预约报名</a-header>
 
-    <scroll-view style="flex: 1;">
+    <scroll-view style="flex: 1;" v-if="detail">
       <view class="pay-top">
-        <img :src="cover" class="cover"/>
+        <img :src="detail.rel_order_course_id.cover" class="cover"/>
         <view class="info">
-          <text class="title">{{ title }}</text>
-          <text class="price"> {{ class_hour }}课时 / {{ price }}元</text>
+          <text class="title">{{ detail.rel_order_course_id.title }}</text>
+          <text class="price"> {{ detail.rel_order_course_id.class_hour }}课时 / {{
+              detail.rel_order_course_id.price
+            }}元
+          </text>
         </view>
       </view>
 
       <view class="intro">
         <a-cell title="课程类型" value="线上直播课"/>
-        <a-cell title="开课时间" value="5月30日 09:00"/>
+        <a-cell title="开课时间" :value="timer(detail.rel_order_course_id.start_time)"/>
       </view>
 
       <a-section title="课程详情" style="margin-top: 10px;">
-        <a-cell type="plain" title="课程名称" value="线上直播课"/>
-        <a-cell type="plain" title="支付金额" value="3500.00元"/>
-        <a-cell type="plain" title="订单编号" value="202005439960589"/>
-        <a-cell type="plain" title="创建时间" value="2020-05-29 12:32:15"/>
-        <a-cell type="plain" title="付款时间" value="2020-05-29 12:32:15"/>
+        <a-cell type="plain" title="课程名称" :value="detail.rel_order_course_id.title"/>
+        <a-cell type="plain" title="支付金额" :value="detail.rel_order_course_id.price+'元'"/>
+        <a-cell type="plain" title="订单编号" :value="detail.order_number"/>
+        <a-cell type="plain" title="创建时间" :value="timer(detail.create_time)"/>
+        <a-cell type="plain" title="付款时间" :value="timer(detail.payment_time)"/>
       </a-section>
 
     </scroll-view>
-
-
-    <safe-area></safe-area>
-
+    <view v-if="detail">
+      <view class="cd__bottom--btn" @click="nextStep" v-if="detail.status===1" style="background: #F1C694;">
+        <text class="cd__bottom--text">重新支付</text>
+      </view>
+      <view class="cd__bottom--btn" v-else style="background: #CCC;">
+        <text class="cd__bottom--text">已完成</text>
+      </view>
+      <safe-area></safe-area>
+    </view>
   </view>
 </template>
 
@@ -36,13 +44,56 @@
 import AHeader from "../../components/a-header.stml";
 import ACell from "../../components/a-cell.stml";
 import ASection from "../../components/a-section.stml";
+import {GET, POST} from "../../script/req";
+import {showModal, timer} from "../../components/utils";
 
 export default {
   name: "order-detail",
   components: {ASection, ACell, AHeader},
   data() {
-    const {title, class_hour, price, cover} = api.pageParam;
-    return {title, class_hour, price, cover};
+    return {detail: false};
+  },
+  installed() {
+    this.getDetail();
+  },
+  methods: {
+    getDetail() {
+      GET('i_alls/orderDetail?orderId=' + (api.pageParam.id || '6e653230-5645-11eb-b53a-d3f0db81efe0')).then(data => {
+        this.data.detail = data[0];
+      })
+    },
+    nextStep() {
+      showModal({
+        title: '订单已经创建',
+        content: '正在模拟支付过程，正式使用可以接入响应支付渠道。请选择确定支付成功，或者取消支付。',
+        success: res => {
+          if (res.confirm) {
+            this.mockPay(this.data.detail.id);
+          } else {
+            api.toast({
+              msg: '用户已经取消支付'
+            })
+          }
+        }
+      })
+    },
+    mockPay(orderId) {
+      POST('i_alls/mockPay', {
+        amount: this.data.price, orderId
+      }).then(_ => {
+
+        this.data.detail.status = 2;
+
+        api.openWin({
+          name: 'pay-result',
+          url: '../pay-result/pay-result.stml',
+          pageParam: {
+            title: '支付成功',
+            desc: '可在“我的”中查看预约报名记录'
+          }
+        })
+      })
+    }
   }
 
 }
@@ -90,4 +141,17 @@ export default {
   background: #FFF;
 }
 
+.cd__bottom--btn {
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  margin: 15px;
+  border-radius: 5px;
+}
+
+.cd__bottom--text {
+  color: #FFF;
+  font-size: 16px;
+  font-weight: bold;
+}
 </style>
