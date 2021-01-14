@@ -2,9 +2,14 @@
   <view class="page">
     <a-header :left-icon="false">柚子英语教育</a-header>
     <scroll-view style="flex: 1;">
-      <view class="user-panel">
+      <view class="user-panel" v-if="userData" @click="logout">
         <img src="../../images/icon__tab--user-1.png" alt="" class="user-avatar">
-        <text class="user-name">我的用户名</text>
+        <text class="user-name">{{ userData.name }}</text>
+      </view>
+
+      <view class="user-panel" v-else @click="doLogin">
+        <img src="../../images/icon__tab--user-0.png" alt="" class="user-avatar">
+        <text class="user-name">请登录</text>
       </view>
 
       <a-cell title="我的预约" value="好的" link="preorder-list"
@@ -21,23 +26,74 @@
 import AHeader from "../../components/a-header.stml";
 import ACellGroup from "../../components/a-cell-group.stml";
 import ACell from "../../components/a-cell.stml";
+import {POST} from "../../script/req";
+import {showModal} from "../../components/utils";
+
+const userDataKey = 'USER-DATA';
 
 export default {
   name: "tpl",
   components: {ACell, ACellGroup, AHeader},
-  apiready() {
+  installed() {
+    this.syncUserData();
   },
   data() {
     return {
-      text: "Hello APP!"
+      userData: false
     };
   },
   methods: {
-    btnAction(e) {
-      api.alert({
-        msg: e.currentTarget.dataset.info
-      });
+    doLogin() {
+      showModal({
+        title: "登录说明", content: '本次登录将使用模拟用户数据',
+        success: res => {
+          POST('i_alls/appLogin', {
+            deviceId: api.deviceId
+          }).then(data => {
+            api.setPrefs({
+              key: userDataKey,
+              value: data[0]
+            })
+            this.syncUserData();
+          })
+        }
+      })
+    },
+    syncUserData() {
+      const userData = api.getPrefs({
+        key: userDataKey,
+        sync: true
+      })
+
+      if (userData) {
+        this.data.userData = JSON.parse(userData);
+      } else {
+        this.data.userData = false;
+      }
+
+    },
+    logout() {
+      showModal({
+        title: '提示',
+        content:'您真的确定要退出当前账号吗',
+        success: (res) => {
+          if (res.confirm) {
+            api.removePrefs({
+              key: userDataKey
+            });
+
+            api.toast({
+              msg: '退出成功'
+            })
+            setTimeout(_ => {
+              this.syncUserData()
+            }, 300);
+          }
+        }
+      })
     }
+
+
   }
 };
 </script>
