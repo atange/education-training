@@ -10,15 +10,17 @@
         <a-cell type="plain" title="备注" :value="detail.remark"/>
       </a-section>
     </scroll-view>
-    <view class="cd__bottom--btn" @click="nextStep" v-if="detail.status===1" style="background: #F1C694;">
-      <text class="cd__bottom--text">取消预约</text>
-    </view>
-    <view class="cd__bottom--btn" v-else style="background: #CCC;">
-      <text class="cd__bottom--text">已取消</text>
-    </view>
 
-    <safe-area></safe-area>
+    <view v-if="detail">
+      <view class="cd__bottom--btn" @click="nextStep" v-if="detail.status===1" style="background: #F1C694;">
+        <text class="cd__bottom--text">取消预约</text>
+      </view>
+      <view class="cd__bottom--btn" v-else style="background: #CCC;">
+        <text class="cd__bottom--text">已取消</text>
+      </view>
 
+      <safe-area></safe-area>
+    </view>
   </view>
 </template>
 
