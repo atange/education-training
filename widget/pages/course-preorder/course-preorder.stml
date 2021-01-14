@@ -3,7 +3,7 @@
     <a-header title="预约报名"/>
     <scroll-view style="flex: 1;padding:15px;">
 
-      <input class="course-input" id="name" type="text" placeholder="姓名"/>
+      <input class="course-input" id="name" type="text" placeholder="姓名" :value="um.data.name"/>
       <input class="course-input" id="mobile" type="text" placeholder="手机号" keyboard-type="tel"/>
       <picker :range="dateList" id="multiSelector" mode="multiSelector" value={multiSelectorValue}
               onChange={this.multiSelectorChange}>
@@ -26,6 +26,7 @@
 <script>
 import AHeader from "../../components/a-header.stml";
 import {POST} from "../../script/req";
+import UserManager from "../../script/UserManager";
 
 export default {
   name: "course-preorder",
@@ -34,7 +35,8 @@ export default {
     return {
       comeTime: '',
       dateList: [[2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]],
-      multiSelectorValue: [4, 0]
+      multiSelectorValue: [4, 0],
+      um: new UserManager()
     }
   },
   methods: {
@@ -47,9 +49,6 @@ export default {
       const mobile = $('#mobile').value;
       const remark = $('#remark').value;
       const comeTime = this.data.comeTime;
-
-
-
 
 
       if (!name) {
@@ -76,9 +75,16 @@ export default {
       }
 
       POST('i_alls/appointmentRegistration', {
-        name, mobile, comeTime
-      }).then(data => {
-        console.log(JSON.stringify(data))
+        name, mobile, comeTime, remark, courseId: api.pageParam.courseId, userId: this.data.um.data.userId
+      }).then(_ => {
+        api.openWin({
+          name: 'pay-result',
+          url: '../pay-result/pay-result.stml',
+          pageParam: {
+            title: '预约成功',
+            desc: false
+          }
+        })
       })
 
     }

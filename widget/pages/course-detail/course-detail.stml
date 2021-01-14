@@ -26,6 +26,7 @@ import AHeader from "../../components/a-header.stml";
 import {GET} from "../../script/req";
 import ASection from "../../components/a-section.stml";
 import BCourse from "../../components/b-course.stml";
+import UserManager from "../../script/UserManager";
 
 export default {
   name: "course-detail",
@@ -37,6 +38,7 @@ export default {
   },
   installed() {
     this.getCourseDetail();
+    this.UM = new UserManager();
   },
   methods: {
     getCourseDetail() {
@@ -49,17 +51,23 @@ export default {
       })
     }
     , nextStep() {
-      if (this.data.courseData.type === 2) {
-        api.openWin({
-          name: 'course-pay',
-          url: '../course-pay/course-pay.stml',
-          pageParam: api.pageParam
-        })
+      if (this.UM.data) {
+        if (this.data.courseData.type === 2) {
+          api.openWin({
+            name: 'course-pay',
+            url: '../course-pay/course-pay.stml',
+            pageParam: api.pageParam
+          })
+        } else {
+          api.openWin({
+            name: 'course-preorder',
+            url: '../course-preorder/course-preorder.stml',
+            pageParam: api.pageParam
+          })
+        }
       } else {
-        api.openWin({
-          name: 'course-preorder',
-          url: '../course-preorder/course-preorder.stml',
-          pageParam: api.pageParam
+        api.toast({
+          msg: '请登录后再进行操作'
         })
       }
     }

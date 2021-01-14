@@ -7,7 +7,7 @@
     <view class="cd__top--footer">
 
       <text class="cd__top--price">
-        {{ this.props.courseData.class_hour }}课时 / {{ this.props.courseData.price }}
+        {{ this.props.courseData.class_hour }}课时 / {{ this.props.courseData.price }}元
       </text>
 
       <view v-if="this.props.courseData.video_path" style="flex-flow: row;" @click="playVideo">

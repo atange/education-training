@@ -1,5 +1,6 @@
 <template>
   <view class="b-notice">
+
     {this.props.icon&&<img src={this.props.icon} alt="" class="b-notice__icon--img">}
     {this.props.title&&
     <text class="b-notice__title--text">
@@ -11,8 +12,8 @@
     }
 
     {this.props['btn-text']&&
-    <view class="b-notice__btn" onclick={this.props['on-btn-click']}>
-      <view class="b-notice__button">
+    <view class="b-notice__btn">
+      <view class="b-notice__button" onClick={this.props.onBtnClick}>
         <text class="b-notice__button--text">{this.props['btn-text']}</text>
       </view>
     </view>
@@ -55,7 +56,7 @@ export default {
 .b-notice__btn {
   margin-top: 30px;
   flex-flow: row;
-  flex: 1;
+  /*flex: 1; !* 这个存在的话点击事件没有了*!*/
   width: 100%;
 }
 

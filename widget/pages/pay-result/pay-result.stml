@@ -1,9 +1,12 @@
 <template>
   <view class="page">
-    <a-header title="预约报名"/>
+    <a-header :title="api.pageParam.title"/>
 
-    <b-notice icon="../../images/icon__notice--success.png" title="支付成功" desc="这是一段测试说明"
-              btn-text="确定"/>
+    <b-notice icon="../../images/icon__notice--success.png"
+              :title={api.pageParam.title} :desc={api.pageParam.desc} @BtnClick="back"
+              btn-text="返回"/>
+
+
   </view>
 </template>
 
@@ -15,8 +18,8 @@ export default {
   name: "pay-result",
   components: {BNotice, AHeader},
   methods: {
-    test() {
-      console.log(this)
+    back() {
+      api.closeWin();
     }
   }
 }

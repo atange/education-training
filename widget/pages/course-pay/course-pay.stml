@@ -7,7 +7,7 @@
         <img :src="cover" class="cover"/>
         <view class="info">
           <text class="title">{{ title }}</text>
-          <text class="price"> {{ class_hour }}课时 / {{ price }}</text>
+          <text class="price"> {{ class_hour }}课时 / {{ price }}元</text>
         </view>
       </view>
 
@@ -22,8 +22,8 @@
 
     </scroll-view>
 
-    <view class="pay-btn">
-      <text class="pay-btn__text">去支付3500元</text>
+    <view class="pay-btn" @click="placeAnOrder">
+      <text class="pay-btn__text">去支付{{ price }}元</text>
     </view>
 
     <safe-area></safe-area>
@@ -34,13 +34,57 @@
 <script>
 import AHeader from "../../components/a-header.stml";
 import ACell from "../../components/a-cell.stml";
+import {showModal} from "../../components/utils";
+import {POST} from "../../script/req";
+import UserManager from "../../script/UserManager";
 
 export default {
   name: "course-pay",
   components: {ACell, AHeader},
+  installed() {
+    this.userData = new UserManager().data;
+  },
   data() {
     const {title, class_hour, price, cover} = api.pageParam;
     return {title, class_hour, price, cover};
+  }
+  , methods: {
+    placeAnOrder() {
+
+
+      POST('i_alls/placeAnOrder', {
+        userId: this.userData.id,
+        courseId: api.pageParam.id
+      }).then(data => {
+        showModal({
+          title: '订单已经创建',
+          content: '正在模拟支付过程，正式使用可以接入响应支付渠道。请选择确定支付成功，或者取消支付。',
+          success: res => {
+            if (res.confirm) {
+              this.mockPay(data.id);
+            } else {
+              api.toast({
+                msg: '用户已经取消支付'
+              })
+            }
+          }
+        })
+      })
+    },
+    mockPay(orderId) {
+      POST('i_alls/mockPay', {
+        amount: this.data.price, orderId
+      }).then(_ => {
+        api.openWin({
+          name: 'pay-result',
+          url: '../pay-result/pay-result.stml',
+          pageParam: {
+            title: '支付成功',
+            desc: '可在“我的”中查看预约报名记录'
+          }
+        })
+      })
+    }
   }
 }
 </script>

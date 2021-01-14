@@ -7,7 +7,7 @@
         <img :src="cover" class="cover"/>
         <view class="info">
           <text class="title">{{ title }}</text>
-          <text class="price"> {{ class_hour }}课时 / {{ price }}</text>
+          <text class="price"> {{ class_hour }}课时 / {{ price }}元</text>
         </view>
       </view>
 
