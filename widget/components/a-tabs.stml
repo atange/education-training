@@ -1,7 +1,8 @@
 <template>
   extendsClassStyleEvents.call(this,
   <view class="a-tabs">
-    <view class={mixedClass('a-tabs__nav',{'a-tabs__nav-scroll':this.scrollNav})}>
+    <view class={mixedClass('a-tabs__nav',{'a-tabs__nav-scroll':this.scrollNav})}
+          style="flex-flow: row nowrap;justify-content: space-around;height: 44px;align-items: center;flex-shrink: 0;">
       <view class={mixedClass('a-tabs__nav--item',{'a-tabs__nav--item-scroll':this.scrollNav})}
             onClick={this.handleNavClick.bind(this,index)}
             v-for="(item,index) in this.props.children">
