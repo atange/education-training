@@ -228,7 +228,9 @@ function getHomeData() {
 function extendsClassStyleEvents(VNode) {
     this.props.class && (VNode.attributes.class += ' ' + this.props.class);
     this.props.style && (VNode.attributes.style = this.props.style);
-    Object.values(this.props).filter(item => typeof item === 'function' && item.name.startsWith('on')).forEach(ev => VNode.attributes[ev.name] = ev);
+    Object.values(this.props)
+          .filter(item => typeof item === 'function' && item.name.startsWith('on'))
+          .forEach(ev => VNode.attributes[ev.name] = ev);
     return VNode;
 }
 ~~~
@@ -312,7 +314,8 @@ function extendsClassStyleEvents(VNode) {
  */
 function mixedClass(cls, extra) {
     let classList = [cls];
-    Object.entries(extra).forEach(([key, val]) => val && classList.push(key));
+    Object.entries(extra)
+          .forEach(([key, val]) => val && classList.push(key));
     return classList.join(' ');
 }
 ~~~
