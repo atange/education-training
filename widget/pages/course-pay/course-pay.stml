@@ -2,7 +2,7 @@
   <view class="page">
     <a-header>预约报名</a-header>
 
-    <scroll-view style="flex: 1;">
+    <scroll-view style="flex: 1;" scroll-y>
       <view class="pay-top">
         <img :src="cover" class="cover"/>
         <view class="info">

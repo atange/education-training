@@ -1,7 +1,7 @@
 <template>
   <view class="page">
     <a-header>我的预定</a-header>
-    <scroll-view style="flex: 1;">
+    <scroll-view style="flex: 1;" scroll-y>
 
       <view class="pl-item" v-for="pre in list" @click="intoDetail(pre)">
         <view style="flex: 1;">

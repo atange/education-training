@@ -1,7 +1,7 @@
 <template>
   <view class="page">
     <a-header>我的订单</a-header>
-    <scroll-view style="flex: 1;">
+    <scroll-view style="flex: 1;" scroll-y>
       <view class="ol-item" v-for="order in list" @click="intoDetail(order)">
         <view class="ol-item__header">
           <text class="ol-item__header--title">{{ order.rel_order_course_id.title }}</text>
