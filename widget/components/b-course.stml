@@ -10,7 +10,7 @@
         {{ this.props.courseData.class_hour }}课时 / {{ this.props.courseData.price }}元
       </text>
 
-      <view v-if="this.props.courseData.video_path" style="flex-flow: row;" @click="playVideo">
+      <view v-if="this.props.courseData.video_path" class="cd__top--video-box" @click="playVideo">
         <img class="cd__top--icon-video" src="../../images/icon__course-detail--video.png" alt=""/>
         <text class="cd__top--goto">查看公开课</text>
       </view>
@@ -80,6 +80,10 @@ export default {
   font-size: 14px;
   color: #E5BA87;
   font-weight: bold;
+}
+
+.cd__top--video-box {
+  flex-flow: row nowrap;
 }
 
 </style>
