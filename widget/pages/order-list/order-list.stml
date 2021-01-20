@@ -79,7 +79,7 @@ export default {
 
 .ol-item {
   background: #FFFFFF;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2px 6px #e2e0e0;
   border-radius: 4px;
   margin: 10px;
 }
