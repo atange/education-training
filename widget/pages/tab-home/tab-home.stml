@@ -22,7 +22,7 @@
 
       <a-section title="名师团队" v-if="homeData.teacher_teams" class="main__teachers">
         <scroll-view class="main__teacher" scroll-x>
-          <view class="main__teacher--item" v-for="item in homeData.teacher_teams" @click="test">
+          <view class="main__teacher--item" v-for="item in homeData.teacher_teams" @click="test(item)">
             <img :src="item.thumb" class="main__teacher--item-img"/>
             <text class="main__teacher--item-name">{{ item.name }}</text>
             <text class="main__teacher--item-introduction">{{ item.introduction }}</text>
@@ -82,10 +82,10 @@ export default {
         url: '../course-list/course-list.stml', pageParam
       })
     },
-    test() {
+    test(item) {
       showModal({
-        title: '提示',
-        content: '这是一个模态弹窗',
+        title: item.name,
+        content: item.introduction,
         success(res) {
           if (res.confirm) {
             console.log('用户点击确定')
