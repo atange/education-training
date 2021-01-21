@@ -4,29 +4,41 @@
     {api.systemType==='android'?
     <view class="a-tabs">
       <view class="a-tabs__nav"
-            style="flex-flow: row nowrap;justify-content: space-around;height: 44px;align-items: center;flex-shrink: 0;">
+            style="flex-flow: row nowrap;flex-shrink: 0;">
         <view class="a-tabs__nav--item" onClick={this.handleNavClick.bind(this,index)}
+              style="flex:1;height: 44px;justify-content: center;align-items: center;"
               v-for="(it,index) in course_category">
           <text :class="'a-tabs__nav-text'
             + (index===this.data.tabsParam.current?' a-tabs__nav-text---active':'')">
             {it.name}
           </text>
+          <view :class="index===this.data.tabsParam.current?'a-tabs__nav--line-active':'a-tabs__nav--line'"></view>
         </view>
       </view>
 
       <list-view id="listView" class="main" enable-back-to-top onscrolltolower={this.onscrolltolower}>
         <cell @click="itemClick">
-          <img _slot="content" class="course-tabs__item--list__item--cover" :src="item.cover"/>
-          <view _slot="footer" class="course-item__footer">
-            <view class="course-item__info">
-              <text class="course-item__info--title">{{ item.title }}</text>
-              <text class="course-item__info--price">{{ item.class_hour + '课时 / ' }}</text>
-              <text class="course-item__info--price">{{ item.class_hour + '元' }}</text>
+          <view class="course-tabs__item--list__item">
+            <img _slot="content" class="course-tabs__item--list__item--cover" :src="item.cover"/>
+            <view _slot="footer" class="course-item__footer a-card__footer">
+              <view class="course-item__info">
+                <text class="course-item__info--title">{{ item.title }}</text>
+                <text class="course-item__info--price">{{ item.class_hour + '课时 / ' }}</text>
+                <text class="course-item__info--price">{{ item.class_hour + '元' }}</text>
+              </view>
+              <text class="course-tabs__item--list__item--introduction">{{ item.introduction }}</text>
             </view>
-            <text class="course-tabs__item--list__item--introduction">{{ item.introduction }}</text>
           </view>
         </cell>
       </list-view>
+
+      { this.data.dataList[tabsParam.current]==='-'&&
+      <b-notice title="正在加载中" icon="../../images/icon__notice--loading.gif"/>
+      }
+      { this.data.dataList[tabsParam.current].length===0&&
+      <b-notice title="暂无数据哦" icon="../../images/icon__notice--empty.png"/>
+      }
+
     </view>
     :
     <a-tabs class="course-tabs" :param="tabsParam" onChange="tabChange">
@@ -130,8 +142,9 @@ export default {
         // })
 
         if (api.systemType === 'android') {
-          var listView = document.getElementById('listView');
-          listView.load({data: this.data.dataList[this.data.tabsParam.current]});
+          const listView = document.getElementById('listView');
+          const data = this.data.dataList[this.data.tabsParam.current];
+          listView.load({data});
         }
       }
     },
@@ -158,11 +171,12 @@ export default {
 <style>
 .page {
   height: 100%;
-  background-color: #F8F8F8;
+  background-color: #f0f0f0;
 }
 
 .a-tabs__nav {
   background: #FFF;
+  border: 1px solid #f3f3f3;
 }
 
 .course-tabs__item--list__item {
@@ -215,7 +229,9 @@ export default {
 }
 
 .a-tabs__nav-text---active {
-  color: #333;
+  color: #FA6400;
   font-weight: bold;
 }
+
+
 </style>
