@@ -1,33 +1,60 @@
 <template name='c-course-list'>
   <view class="page">
     <a-header :left-icon="leftIcon">柚子英语教育</a-header>
+    {api.systemType==='android'?
+    <view class="a-tabs">
+      <view class="a-tabs__nav"
+            style="flex-flow: row nowrap;justify-content: space-around;height: 44px;align-items: center;flex-shrink: 0;">
+        <view class="a-tabs__nav--item" onClick={this.handleNavClick.bind(this,index)}
+              v-for="(it,index) in course_category">
+          <text :class="'a-tabs__nav-text'
+            + (index===this.data.tabsParam.current?' a-tabs__nav-text---active':'')">
+            {it.name}
+          </text>
+        </view>
+      </view>
+
+      <list-view id="listView" class="main" enable-back-to-top onscrolltolower={this.onscrolltolower}>
+        <cell @click="itemClick">
+          <img _slot="content" class="course-tabs__item--list__item--cover" :src="item.cover"/>
+          <view _slot="footer" class="course-item__footer">
+            <view class="course-item__info">
+              <text class="course-item__info--title">{{ item.title }}</text>
+              <text class="course-item__info--price">{{ item.class_hour + '课时 / ' }}</text>
+              <text class="course-item__info--price">{{ item.class_hour + '元' }}</text>
+            </view>
+            <text class="course-tabs__item--list__item--introduction">{{ item.introduction }}</text>
+          </view>
+        </cell>
+      </list-view>
+    </view>
+    :
     <a-tabs class="course-tabs" :param="tabsParam" onChange="tabChange">
-      <a-tab class="course-tabs__item" :title="item.name" v-for="item in course_category">
+      <a-tab class="course-tabs__item" :title="it.name" v-for="it in course_category">
         {this.data.dataList[tabsParam.current]==='-'?
         <b-notice title="正在加载中" icon="../../images/icon__notice--loading.gif"/>
         :
         (
         this.data.dataList[tabsParam.current].length?
         <view class="course-tabs__item--list">
-          <view>
-            <a-card v-for="item in dataList[tabsParam.current]" class="course-tabs__item--list__item"
-                    @click="goto(item)">
-              <img _slot="content" class="course-tabs__item--list__item--cover" :src="item.cover"/>
-              <view _slot="footer" class="course-item__footer">
-                <view class="course-item__info">
-                  <text class="course-item__info--title">{{ item.title }}</text>
-                  <text class="course-item__info--price">{{ item.class_hour }}课时/{{ item.class_hour }}元</text>
-                </view>
-                <text class="course-tabs__item--list__item--introduction">{{ item.introduction }}</text>
+          <a-card v-for="item in dataList[tabsParam.current]" class="course-tabs__item--list__item"
+                  @click="goto(item)">
+            <img _slot="content" class="course-tabs__item--list__item--cover" :src="item.cover"/>
+            <view _slot="footer" class="course-item__footer">
+              <view class="course-item__info">
+                <text class="course-item__info--title">{{ item.title }}</text>
+                <text class="course-item__info--price">{{ item.class_hour }}课时/{{ item.class_hour }}元</text>
               </view>
-            </a-card>
-          </view>
+              <text class="course-tabs__item--list__item--introduction">{{ item.introduction }}</text>
+            </view>
+          </a-card>
         </view>
         :
         <b-notice title="暂无数据哦" icon="../../images/icon__notice--empty.png"/>
         )}
       </a-tab>
     </a-tabs>
+    }
   </view>
 </template>
 <script>
@@ -93,14 +120,19 @@ export default {
           // })
 
           if (api.systemType === 'android') {
-           this.initData(false);
+            var listView = document.getElementById('listView');
+            listView.load({data});
           }
-
         })
       } else {
         // api.toast({
         //   msg: '已加载过' + this.data.tabsParam.current
         // })
+
+        if (api.systemType === 'android') {
+          var listView = document.getElementById('listView');
+          listView.load({data: this.data.dataList[this.data.tabsParam.current]});
+        }
       }
     },
     tabChange(e) {
@@ -113,33 +145,12 @@ export default {
         url: '../course-detail/course-detail.stml',
         pageParam
       })
-    }, itemClick(e) {
-      api.alert({
-        msg: JSON.stringify(e.target)
-      });
+    }, itemClick({target: {index}}) {
+      this.goto(this.data.dataList[this.tabsParam.current][index]);
     },
-    initData(loadMore) {
-      var that = this;
-      var skip = that.dataList?that.dataList.length:0;
-      var dataList = [];
-      for (var i=0;i<20;i++) {
-        dataList[i] = {
-          title: '项目' + (i + skip),
-          subtitle: '这里是子标题'
-        }
-      }
-      var listView = document.getElementById('listView');
-      if (loadMore) {
-        that.dataList = that.dataList.concat(dataList);
-        listView.insert({
-          data: dataList
-        });
-      } else {
-        that.dataList = dataList;
-        listView.load({
-          data: dataList
-        });
-      }
+    handleNavClick(index) {
+      this.data.tabsParam.current = index;
+      this.getCourseData();
     }
   }
 };
@@ -193,5 +204,18 @@ export default {
 
 .a-card__footer {
   padding: 15px 10px;
+}
+
+.a-tabs__nav-text {
+  color: #666;
+  font-size: 14px;
+  font-weight: normal;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.a-tabs__nav-text---active {
+  color: #333;
+  font-weight: bold;
 }
 </style>
