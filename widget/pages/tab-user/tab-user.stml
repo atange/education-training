@@ -96,7 +96,7 @@ export default {
   width: 60px;
   height: 60px;
   background: #EFEFEF;
-  border-radius: 50%;
+  border-radius: 30px;
   border: 4px solid #F1C694;
   margin: 20px;
 }
