@@ -3,12 +3,12 @@
     <a-header :left-icon="false">柚子英语教育</a-header>
     <scroll-view style="flex: 1;" scroll-y>
       <view class="user-panel" v-if="userData" @click="logout">
-        <img src="../../images/icon__tab--user-1.png" alt="" class="user-avatar">
+        <img src="../../images/icon__tab--user-1.png" alt="" class="user-avatar"/>
         <text class="user-name">{{ userData.name }}</text>
       </view>
 
       <view class="user-panel" v-else @click="doLogin">
-        <img src="../../images/icon__tab--user-0.png" alt="" class="user-avatar">
+        <img src="../../images/icon__tab--user-0.png" alt="" class="user-avatar"/>
         <text class="user-name">请登录</text>
       </view>
 
