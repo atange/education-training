@@ -1,6 +1,7 @@
 <template>
   <view class="page">
     <a-header>我的订单</a-header>
+    {this.data.list.length?
     <scroll-view style="flex: 1;" scroll-y>
       <view class="ol-item" v-for="order in list" @click="intoDetail(order)">
         <view class="ol-item__header">
@@ -12,9 +13,10 @@
           <text class="ol-item__content--li ol-item__content--order">订单号：{{ order.order_number }}</text>
           <text class="ol-item__content--li">支付金额：{{ order.amount }}元</text>
         </view>
-
       </view>
-    </scroll-view>
+    </scroll-view>:
+    <b-notice title="暂无数据哦" icon="../../images/icon__notice--empty.png"/>
+    }
   </view>
 </template>
 
@@ -24,10 +26,11 @@ import ACard from "../../components/a-card.stml";
 import UserManager from "../../script/UserManager";
 import {showModal} from "../../components/utils";
 import {GET} from "../../script/req";
+import BNotice from "../../components/b-notice.stml";
 
 export default {
   name: "order-list",
-  components: {ACard, AHeader},
+  components: {BNotice, ACard, AHeader},
   data() {
     return {
       list: []

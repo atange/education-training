@@ -1,8 +1,8 @@
 <template>
   <view class="page">
     <a-header>我的预定</a-header>
+    {this.data.list.length?
     <scroll-view style="flex: 1;" scroll-y>
-
       <view class="pl-item" v-for="pre in list" @click="intoDetail(pre)">
         <view style="flex: 1;">
           <view class="pl-item__header">
@@ -16,8 +16,10 @@
         </view>
         <img class="pl-item__content--arrow" src="../../images/icon__preorder-list--item-arrow.png" alt="">
       </view>
-
     </scroll-view>
+    :
+    <b-notice title="暂无数据哦" icon="../../images/icon__notice--empty.png"/>
+    }
   </view>
 </template>
 
@@ -26,10 +28,11 @@ import AHeader from "../../components/a-header.stml";
 import {GET} from "../../script/req";
 import UserManager from "../../script/UserManager";
 import {showModal, timer} from "../../components/utils";
+import BNotice from "../../components/b-notice.stml";
 
 export default {
   name: "preorder-list",
-  components: {AHeader},
+  components: {BNotice, AHeader},
   data() {
     return {
       list: []

@@ -12,7 +12,7 @@
         <text class="user-name">请登录</text>
       </view>
 
-      <a-cell title="我的预约" value="好的" link="preorder-list"
+      <a-cell title="我的预约" value="立即查看" link="preorder-list"
               imgIcon="../../images/icon__user-cell--alarm.png"/>
       <a-cell title="我的线上课订单"
               link="../order-list/order-list.stml"
