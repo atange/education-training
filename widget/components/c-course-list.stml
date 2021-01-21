@@ -3,25 +3,29 @@
     <a-header :left-icon="leftIcon">柚子英语教育</a-header>
     <a-tabs class="course-tabs" :param="tabsParam" onChange="tabChange">
       <a-tab class="course-tabs__item" :title="item.name" v-for="item in course_category">
-        <view v-if="dataList[tabsParam.current]==='-'">
-          <b-notice title="正在加载中" icon="../../images/icon__notice--loading.gif"/>
-        </view>
-
-        <view v-else-if="dataList[tabsParam.current].length" class="course-tabs__item--list">
-          <a-card v-for="item in dataList[tabsParam.current]" class="course-tabs__item--list__item" @click="goto(item)">
-            <img _slot="content" class="course-tabs__item--list__item--cover" :src="item.cover"/>
-            <view _slot="footer" class="course-item__footer">
-              <view class="course-item__info">
-                <text class="course-item__info--title">{{ item.title }}</text>
-                <text class="course-item__info--price">{{ item.class_hour }}课时/{{ item.class_hour }}元</text>
+        {this.data.dataList[tabsParam.current]==='-'?
+        <b-notice title="正在加载中" icon="../../images/icon__notice--loading.gif"/>
+        :
+        (
+        this.data.dataList[tabsParam.current].length?
+        <view class="course-tabs__item--list">
+          <view>
+            <a-card v-for="item in dataList[tabsParam.current]" class="course-tabs__item--list__item"
+                    @click="goto(item)">
+              <img _slot="content" class="course-tabs__item--list__item--cover" :src="item.cover"/>
+              <view _slot="footer" class="course-item__footer">
+                <view class="course-item__info">
+                  <text class="course-item__info--title">{{ item.title }}</text>
+                  <text class="course-item__info--price">{{ item.class_hour }}课时/{{ item.class_hour }}元</text>
+                </view>
+                <text class="course-tabs__item--list__item--introduction">{{ item.introduction }}</text>
               </view>
-              <text class="course-tabs__item--list__item--introduction">{{ item.introduction }}</text>
-            </view>
-          </a-card>
+            </a-card>
+          </view>
         </view>
-        <view v-else>
-          <b-notice title="暂无数据哦" icon="../../images/icon__notice--empty.png"/>
-        </view>
+        :
+        <b-notice title="暂无数据哦" icon="../../images/icon__notice--empty.png"/>
+        )}
       </a-tab>
     </a-tabs>
   </view>
@@ -87,6 +91,11 @@ export default {
           //   msg: '加载完成' + this.data.tabsParam.current,
           //   location: 'middle'
           // })
+
+          if (api.systemType === 'android') {
+           this.initData(false);
+          }
+
         })
       } else {
         // api.toast({
@@ -104,6 +113,33 @@ export default {
         url: '../course-detail/course-detail.stml',
         pageParam
       })
+    }, itemClick(e) {
+      api.alert({
+        msg: JSON.stringify(e.target)
+      });
+    },
+    initData(loadMore) {
+      var that = this;
+      var skip = that.dataList?that.dataList.length:0;
+      var dataList = [];
+      for (var i=0;i<20;i++) {
+        dataList[i] = {
+          title: '项目' + (i + skip),
+          subtitle: '这里是子标题'
+        }
+      }
+      var listView = document.getElementById('listView');
+      if (loadMore) {
+        that.dataList = that.dataList.concat(dataList);
+        listView.insert({
+          data: dataList
+        });
+      } else {
+        that.dataList = dataList;
+        listView.load({
+          data: dataList
+        });
+      }
     }
   }
 };
